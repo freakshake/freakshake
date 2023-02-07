@@ -9,11 +9,16 @@ import (
 
 type service struct {
 	userPostgresStorage model.UserStorage
+	userMongoStorage    model.UserStorage
 }
 
-func NewService(userPostgresStorage model.UserStorage) model.UserService {
+func NewService(
+	userPostgresStorage model.UserStorage,
+	userMongoStorage model.UserStorage,
+) model.UserService {
 	return &service{
 		userPostgresStorage: userPostgresStorage,
+		userMongoStorage:    userMongoStorage,
 	}
 }
 
