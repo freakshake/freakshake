@@ -50,7 +50,7 @@ func main() {
 	userPostgresStorage := repository.NewUserPostgresStorage(postgresDB)
 	userMongoStorage := repository.NewUserMongoStorage(mongoClient)
 
-	// Service (use case) layer.
+	// Service (usecase) layer.
 	userService := usecase.NewUserService(userPostgresStorage, userMongoStorage, cache)
 
 	// HTTP Transport layer.
@@ -58,16 +58,16 @@ func main() {
 
 	controller.UserRoutes(e, userService)
 
+	errCh := make(chan error, 1)
+
+	httpServer := httpserver.Listen(e, errCh, cfg.HTTPServer.IP, cfg.HTTPServer.Port)
+
 	ctx, stop := signal.NotifyContext(
 		context.Background(),
 		os.Interrupt,
 		syscall.SIGTERM,
 		syscall.SIGQUIT,
 	)
-
-	errCh := make(chan error, 1)
-
-	httpServer := httpserver.Listen(e, errCh, cfg.HTTPServer.IP, cfg.HTTPServer.Port)
 
 	go func() {
 		<-ctx.Done()
