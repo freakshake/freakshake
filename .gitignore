@@ -16,7 +16,6 @@
 
 .vscode/
 logs.log
-service
 uploads/*
 shell.nix
 medad

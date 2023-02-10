@@ -23,10 +23,10 @@ doc:
 	swag i --pd 
 
 build-http:
-	go build ./cmd/service/
+	go build -o medad ./cmd/service/
 
 run-http:
-	./service
+	./medad
 
 postgres-container:
 	docker run --name $(POSTGRES_CONTAINER) -p $(POSTGRES_PORT):5432 -e POSTGRES_USER=$(POSTGRES_USER) -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -d postgres:alpine
