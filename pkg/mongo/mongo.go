@@ -13,8 +13,8 @@ type ConnectionString struct {
 	Host     string
 	Port     string
 	User     string
-	DB       string
 	Password string
+	DB       string
 }
 
 func (d ConnectionString) String() string {

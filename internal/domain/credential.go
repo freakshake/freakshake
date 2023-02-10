@@ -1,4 +1,4 @@
-package model
+package domain
 
 import (
 	"github.com/mehdieidi/storm/pkg/type/email"
