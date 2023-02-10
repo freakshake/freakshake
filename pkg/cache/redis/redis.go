@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/mehdieidi/storm/infrastructure/cache"
+	"github.com/mehdieidi/storm/pkg/cache"
 )
 
 type redisCache struct {

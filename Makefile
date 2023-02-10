@@ -17,20 +17,23 @@ fmt:
 	swag fmt
 
 lint:
-	golangci-lint run --config "./config/.golangci.yml"
+	golangci-lint run --config "./config/.golangci.yaml"
 
 doc:
 	swag i --pd 
 
 build-http:
-	go build cmd/server/http
+	go build ./cmd/service/
 
 run-http:
-	./cmd/server/http/http
+	./service
 
 postgres-container:
 	docker run --name $(POSTGRES_CONTAINER) -p $(POSTGRES_PORT):5432 -e POSTGRES_USER=$(POSTGRES_USER) -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -d postgres:alpine
 
-redis_container:
+redis-container:
 	docker run --name $(REDIS_CONTAINER) -p 6379:6379 -e REDIS_PASSWORD=redis -d redis:alpine
 
+start-containers:
+	docker start $(POSTGRES_CONTAINER)
+	docker start $(REDIS_CONTAINER)
