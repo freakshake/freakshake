@@ -1,8 +1,12 @@
 package optional
 
 import (
+	_ "database/sql"
 	"database/sql/driver"
 	"encoding/json"
+	_ "unsafe"
+
+	"github.com/mehdieidi/storm/pkg/xerror"
 )
 
 type Optional[T any] struct {
@@ -16,6 +20,14 @@ func Some[T any](v T) Optional[T] {
 
 func None[T any]() Optional[T] {
 	return Optional[T]{isSet: false}
+}
+
+func (o Optional[T]) IsSome() bool {
+	return o.isSet
+}
+
+func (o Optional[T]) IsNone() bool {
+	return !o.isSet
 }
 
 func (o Optional[T]) MarshalJSON() ([]byte, error) {
@@ -42,10 +54,14 @@ func (o *Optional[T]) UnmarshalJSON(b []byte) error {
 }
 
 func (o Optional[T]) Value() (driver.Value, error) {
-	if o.isSet {
-		return o.value, nil
+	if o.IsNone() {
+		return nil, nil
 	}
-	return zero[T](), nil
+	
+	val, err := driver.DefaultParameterConverter.ConvertValue(o.value)
+	xerror.Wrap(&err, "%T.Value()", o)
+
+	return val, err
 }
 
 func (o *Optional[T]) Scan(value any) error {
@@ -53,26 +69,33 @@ func (o *Optional[T]) Scan(value any) error {
 		*o = None[T]()
 		return nil
 	}
+	err := convertAssign(&o.value, value)
+	xerror.Wrap(&err, "%T.Scan(%v)", *o, value)
 
-	v, ok := value.(T)
-	if !ok {
-		return ErrOptionalScan
+	if err == nil {
+		o.isSet = true
 	}
 
-	*o = Some(v)
-
-	return nil
-}
-
-func (o Optional[T]) IsSet() bool {
-	return o.isSet
+	return err
 }
 
 func (o Optional[T]) Get() T {
 	return o.value
 }
 
-func zero[T any]() T {
-	var o T
-	return o
+func (o Optional[T]) GetDefault(x T) T {
+	if o.IsNone() {
+		return x
+	}
+	return o.value
 }
+
+func (o Optional[T]) GetOr(f func() T) T {
+	if o.IsNone() {
+		return f()
+	}
+	return o.value
+}
+
+//go:linkname convertAssign database/sql.convertAssign
+func convertAssign(dest, src any) error
