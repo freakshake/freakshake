@@ -34,6 +34,8 @@ func main() {
 	xerror.PanicIf(err)
 	defer postgresDB.Close()
 
+	xerror.PanicIf(postgres.Migrate(postgresDB, cfg.Postgres.MigrationsPath))
+
 	cache := redis.New(cfg.Redis.Host, cfg.Redis.Port, redis.WithCredential(cfg.Redis.User, cfg.Redis.Password))
 
 	mongoClient := mongo.NewClient(mongo.ConnectionString{

@@ -3,7 +3,8 @@ postgres:
   port: 5432
   user: postgres
   password: 1234
-  db: test
+  db: test_db
+  migrations-path: file://migrations
   
 redis:
   host: localhost
@@ -18,6 +19,6 @@ mongo:
   password:
   db: dbsermovie
 
-httpserver:
+http-server:
   ip: localhost
   port: 6969

@@ -7,12 +7,7 @@ import (
 	"github.com/mehdieidi/storm/pkg/xerror"
 )
 
-// Scanner is an interface used by scan function.
-type Scanner interface {
-	Scan(dest ...any) error
-}
-
-// GetOne is used to retrieve a single row from a database using the provided query and arguments.
+// QueryOne is used to retrieve a single row from a database using the provided query and arguments.
 //
 // Example:
 //
@@ -33,24 +28,24 @@ type Scanner interface {
 //		return name, nil
 //	}
 //	// Execute our query with our scan function and args
-//	result, err := GetOne(ctx, db, scanFunc, "SELECT name FROM users WHERE id = ?", 1)
+//	result, err := QueryOne(ctx, db, scanFunc, "SELECT name FROM users WHERE id = ?", 1)
 //	if err != nil {
 //		panic(err)
 //	}
-func GetOne[T any](
+func QueryOne[T any](
 	ctx context.Context,
 	db *sql.DB,
 	scan func(Scanner) (T, error),
 	query string,
-	args ...interface{},
+	args ...any,
 ) (_ T, err error) {
-	defer xerror.Wrap(&err, "GetOne(ctx, db, scan, %q, %q)", query, args)
+	defer xerror.Wrap(&err, "QueryOne(ctx, db, scan, query, %v)", args)
 
 	row := db.QueryRowContext(ctx, query, args...)
 	return scan(row)
 }
 
-// GetMany is used to retrieve multiple rows from a database using a query and arguments.
+// QueryMany is used to retrieve multiple rows from a database using a query and arguments.
 //
 // Example:
 //
@@ -71,18 +66,18 @@ func GetOne[T any](
 //		return name, nil
 //	}
 //	// Execute our query with our scan function and args
-//	results, err := GetMany(ctx, db, scanFunc, "SELECT name FROM users WHERE age = ?", 34)
+//	results, err := QueryMany(ctx, db, scanFunc, "SELECT name FROM users WHERE age = ?", 34)
 //	if err != nil {
 //		panic(err)
 //	}
-func GetMany[T any](
+func QueryMany[T any](
 	ctx context.Context,
 	db *sql.DB,
 	scan func(Scanner) (_ T, err error),
 	query string,
-	args ...interface{},
+	args ...any,
 ) (_ []T, err error) {
-	defer xerror.Wrap(&err, "GetMany(ctx, db, scan, %q, %q)", query, args)
+	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, %q, %q)", query, args)
 
 	rows, err := db.QueryContext(ctx, query, args...)
 	if err != nil {

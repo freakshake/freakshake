@@ -7,6 +7,7 @@ import (
 	"github.com/mehdieidi/storm/pkg/cache"
 	"github.com/mehdieidi/storm/pkg/type/id"
 	"github.com/mehdieidi/storm/pkg/type/offlim"
+	"github.com/mehdieidi/storm/pkg/update"
 )
 
 type user struct {
@@ -28,26 +29,48 @@ func NewUserService(
 }
 
 func (s *user) Create(ctx context.Context, u domain.User) (domain.User, error) {
-	// TODO
-	return domain.User{}, nil
+	hashedPassword, err := u.Password.Hash()
+	if err != nil {
+		return domain.User{}, err
+	}
+	u.HashedPassword = string(hashedPassword)
+
+	u.ID, err = s.userPostgres.Store(ctx, u)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	return u, nil
 }
 
 func (s *user) Get(ctx context.Context, uID id.ID[domain.User]) (domain.User, error) {
-	// TODO
-	return domain.User{}, nil
+	return s.userPostgres.Find(ctx, uID)
 }
 
 func (s *user) List(ctx context.Context, o offlim.Offset, l offlim.Limit) ([]domain.User, error) {
-	// TODO
-	return nil, nil
+	return s.userPostgres.FindAll(ctx, o, l)
 }
 
-func (s *user) Update(ctx context.Context, uID id.ID[domain.User], u domain.User) error {
-	// TODO
+func (s *user) Update(ctx context.Context, uID id.ID[domain.User], newUser domain.User) error {
+	oldUser, err := s.userPostgres.Find(ctx, uID)
+	if err != nil {
+		return err
+	}
+
+	oldUser.FirstName = update.IfChanged(oldUser.FirstName, newUser.FirstName)
+	oldUser.LastName = update.IfChanged(oldUser.LastName, newUser.LastName)
+	oldUser.Email = update.IfChanged(oldUser.Email, newUser.Email)
+	oldUser.MobileNumber = update.IfChanged(oldUser.MobileNumber, newUser.MobileNumber)
+	oldUser.HashedPassword = update.IfChanged(oldUser.HashedPassword, newUser.HashedPassword)
+	oldUser.Avatar = update.IfNilChanged(oldUser.Avatar, newUser.Avatar)
+
+	if err := s.userPostgres.Update(ctx, uID, oldUser); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (s *user) Delete(ctx context.Context, uID id.ID[domain.User]) error {
-	// TODO
-	return nil
+	return s.userPostgres.Delete(ctx, uID)
 }

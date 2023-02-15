@@ -2,8 +2,12 @@ package postgres
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 )
 
@@ -27,4 +31,28 @@ func (d DSN) String() string {
 
 func Open(d DSN) (*sql.DB, error) {
 	return sql.Open("postgres", d.String())
+}
+
+func Migrate(db *sql.DB, migrationsPath string) error {
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	if err != nil {
+		return err
+	}
+
+	m, err := migrate.NewWithDatabaseInstance(
+		migrationsPath,
+		"postgres",
+		driver,
+	)
+	if err != nil {
+		return err
+	}
+
+	if err := m.Up(); err != nil {
+		if !errors.Is(err, migrate.ErrNoChange) {
+			return err
+		}
+	}
+
+	return nil
 }

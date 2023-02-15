@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mehdieidi/storm/pkg/type/nulltime"
+	"github.com/mehdieidi/storm/pkg/type/optional"
 )
 
 type FileID string
@@ -16,12 +16,12 @@ func NewFileID() FileID {
 }
 
 type FileInfo struct {
-	ID        FileID            `json:"id"`
-	Name      string            `json:"name"`
-	Type      string            `json:"type"`
-	Size      ByteSize          `json:"size"`
-	CreatedAt time.Time         `json:"created_at"`
-	DeletedAt nulltime.NullTime `json:"deleted_at"`
+	ID        FileID                       `json:"id"`
+	Name      string                       `json:"name"`
+	Type      string                       `json:"type"`
+	Size      ByteSize                     `json:"size"`
+	CreatedAt time.Time                    `json:"created_at"`
+	DeletedAt optional.Optional[time.Time] `json:"deleted_at"`
 }
 
 type FileService interface {

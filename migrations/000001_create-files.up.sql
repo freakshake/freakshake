@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS files (
+    id VARCHAR(37) NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    type VARCHAR(6) NOT NULL,
+    size BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT(NOW()),
+    deleted_at TIMESTAMP
+);

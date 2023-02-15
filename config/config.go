@@ -7,11 +7,12 @@ import (
 )
 
 type Postgres struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DB       string
+	Host           string
+	Port           string
+	User           string
+	Password       string
+	DB             string
+	MigrationsPath string `mapstructure:"migrations-path"`
 }
 
 type Redis struct {
@@ -38,7 +39,7 @@ type Config struct {
 	Postgres
 	Redis
 	Mongo
-	HTTPServer
+	HTTPServer `mapstructure:"http-server"`
 }
 
 func Read() (*Config, error) {

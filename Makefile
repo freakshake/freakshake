@@ -1,4 +1,4 @@
-MIGRATIONS_PATH=internal/schemas
+MIGRATIONS_PATH=./migrations/
 
 POSTGRES_DB_NAME=test_db
 POSTGRES_PORT=5432
@@ -37,3 +37,33 @@ redis-container:
 start-containers:
 	docker start $(POSTGRES_CONTAINER)
 	docker start $(REDIS_CONTAINER)
+
+stop-containers:
+	docker stop $(POSTGRES_CONTAINER)
+	docker stop $(REDIS_CONTAINER)
+
+create-postgres-db:
+	docker exec -it $(POSTGRES_CONTAINER) createdb --username=postgres --owner=postgres $(POSTGRES_DB_NAME)
+
+drop-postgres-db:
+	docker exec -it $(POSTGRES_CONTAINER) dropdb --username=postgres $(POSTGRES_DB_NAME)
+
+migrateup:
+	migrate -path "$(MIGRATIONS_PATH)" -database "$(POSTGRES_DB_URL)" -verbose up
+
+migrateup-1:
+	migrate -path "$(MIGRATIONS_PATH)" -database "$(POSTGRES_DB_URL)" -verbose up 1
+
+migratedown:
+	migrate -path "$(MIGRATIONS_PATH)" -database "$(POSTGRES_DB_URL)" -verbose down
+
+migratedown-1:
+	migrate -path "$(MIGRATIONS_PATH)" -database "$(POSTGRES_DB_URL)" -verbose down 1
+
+create-migration:
+	migrate create -ext sql -dir "$(MIGRATIONS_PATH)" -seq "$(MIGRATION_NAME)"
+
+fix-migrate:
+	migrate -database "$(POSTGRES_DB_URL)" -path "$(MIGRATIONS_PATH)" force $(VERSION)
+
+pipeline: tidy doc fmt build server
