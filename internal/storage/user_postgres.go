@@ -1,4 +1,4 @@
-package repository
+package storage
 
 import (
 	"context"
@@ -48,14 +48,14 @@ const updateQuery = `
 		updated_at = NOW()
 `
 
-var scanInsert = func(s xsql.Scanner) (id id.ID[domain.User], err error) {
-	if err := s.Scan(&id); err != nil {
-		return 0, err
-	}
-	return id, nil
-}
+const deleteQuery = `
+	UPDATE users
+	SET 
+		deleted_at = NOW() 
+	WHERE id = $1 AND deleted_at IS NULL
+`
 
-var scanRetrieve = func(s xsql.Scanner) (u domain.User, err error) {
+var scanUser = func(s xsql.Scanner) (u domain.User, err error) {
 	if err := s.Scan(
 		&u.ID,
 		&u.Avatar,
@@ -86,7 +86,7 @@ func NewUserPostgresStorage(db *sql.DB) domain.UserStorage {
 func (s *userPostgres) Store(ctx context.Context, u domain.User) (id.ID[domain.User], error) {
 	query := insertQuery + `($1, $2, $3, $4, $5, $6) RETURNING id`
 
-	id, err := xsql.QueryOne(ctx, s.db, scanInsert, query,
+	id, err := xsql.QueryOne(ctx, s.db, xsql.ScanID[id.ID[domain.User]], query,
 		u.Avatar,
 		u.FirstName,
 		u.LastName,
@@ -104,7 +104,7 @@ func (s *userPostgres) Store(ctx context.Context, u domain.User) (id.ID[domain.U
 func (s *userPostgres) Find(ctx context.Context, uID id.ID[domain.User]) (domain.User, error) {
 	query := selectQuery + `WHERE id = $1 AND deleted_at IS NULL LIMIT 1`
 
-	u, err := xsql.QueryOne(ctx, s.db, scanRetrieve, query, uID)
+	u, err := xsql.QueryOne(ctx, s.db, scanUser, query, uID)
 	if err != nil {
 		return domain.User{}, err
 	}
@@ -115,7 +115,12 @@ func (s *userPostgres) Find(ctx context.Context, uID id.ID[domain.User]) (domain
 func (s *userPostgres) FindAll(ctx context.Context, o offlim.Offset, l offlim.Limit) ([]domain.User, error) {
 	query := selectQuery + `WHERE deleted_at IS NULL ORDER BY id OFFSET $1 LIMIT $2`
 
-	u, err := xsql.QueryMany(ctx, s.db, scanRetrieve, query, o, l)
+	var limit *offlim.Limit
+	if l > 0 {
+		limit = &l
+	}
+
+	u, err := xsql.QueryMany(ctx, s.db, scanUser, query, o, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -142,12 +147,9 @@ func (s *userPostgres) Update(ctx context.Context, uID id.ID[domain.User], u dom
 }
 
 func (s *userPostgres) Delete(ctx context.Context, uID id.ID[domain.User]) error {
-	const query = `UPDATE users SET deleted_at = NOW() WHERE id = $1 AND deleted_at IS NULL`
-
-	_, err := s.db.ExecContext(ctx, query, uID)
+	_, err := s.db.ExecContext(ctx, deleteQuery, uID)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

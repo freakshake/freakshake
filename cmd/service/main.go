@@ -9,10 +9,11 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/mehdieidi/storm/config"
 	"github.com/mehdieidi/storm/internal/controller"
-	"github.com/mehdieidi/storm/internal/repository"
-	"github.com/mehdieidi/storm/internal/usecase"
+	"github.com/mehdieidi/storm/internal/service"
+	"github.com/mehdieidi/storm/internal/storage"
 	"github.com/mehdieidi/storm/pkg/cache/redis"
 	"github.com/mehdieidi/storm/pkg/mongo"
 	"github.com/mehdieidi/storm/pkg/postgres"
@@ -34,36 +35,39 @@ func main() {
 	xerror.PanicIf(err)
 	defer postgresDB.Close()
 
-	xerror.PanicIf(postgres.Migrate(postgresDB, cfg.Postgres.MigrationsPath))
+	xerror.PanicIf(postgres.MigrateUp(postgresDB, cfg.Postgres.MigrationsPath))
 
 	cache := redis.New(cfg.Redis.Host, cfg.Redis.Port, redis.WithCredential(cfg.Redis.User, cfg.Redis.Password))
 
-	mongoClient := mongo.NewClient(mongo.ConnectionString{
+	mongoClient, err := mongo.NewClient(mongo.ConnectionString{
 		Host:     cfg.Mongo.Host,
 		Port:     cfg.Mongo.Port,
 		User:     cfg.Mongo.User,
 		Password: cfg.Mongo.Password,
 		DB:       cfg.Mongo.DB,
 	})
+	xerror.PanicIf(err)
 	xerror.PanicIf(mongo.Ping(mongoClient))
-	defer mongoClient.Disconnect(context.TODO())
+	defer mongoClient.Disconnect(context.Background())
 
 	// Storage (repository) layer.
-	userPostgresStorage := repository.NewUserPostgresStorage(postgresDB)
-	userMongoStorage := repository.NewUserMongoStorage(mongoClient)
+	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB)
+	userMongoStorage := storage.NewUserMongoStorage(mongoClient)
 
 	// Service (usecase) layer.
-	userService := usecase.NewUserService(userPostgresStorage, userMongoStorage, cache)
+	userService := service.NewUserService(userPostgresStorage, userMongoStorage, cache)
 
-	// HTTP Transport layer.
+	// HTTP transport layer.
 	e := echo.New()
 
-	controller.UserRoutes(e, userService)
+	g := e.Group("/api/v1")
+	controller.UserRoutes(g, userService)
 
 	errCh := make(chan error, 1)
 
 	httpServer := httpserver.Listen(e, errCh, cfg.HTTPServer.IP, cfg.HTTPServer.Port)
 
+	// Graceful shutdown in case of common signals.
 	ctx, stop := signal.NotifyContext(
 		context.Background(),
 		os.Interrupt,
@@ -94,6 +98,6 @@ func main() {
 	}()
 
 	if err := <-errCh; err != nil {
-		fmt.Println("[x] error", err)
+		fmt.Println("[x] error:", err)
 	}
 }

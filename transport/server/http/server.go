@@ -14,7 +14,7 @@ func Listen(h http.Handler, errCh chan error, ip, port string) *http.Server {
 	}
 
 	go func() {
-		fmt.Println("[+] HTTP Server listening on", addr)
+		fmt.Println("[+] HTTP server listening on", addr)
 
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			errCh <- err

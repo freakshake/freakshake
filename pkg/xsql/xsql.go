@@ -77,7 +77,7 @@ func QueryMany[T any](
 	query string,
 	args ...any,
 ) (_ []T, err error) {
-	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, %q, %q)", query, args)
+	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, query, %v)", args)
 
 	rows, err := db.QueryContext(ctx, query, args...)
 	if err != nil {

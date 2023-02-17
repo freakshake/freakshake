@@ -1,13 +1,13 @@
-package usecase
+package service
 
 import (
 	"context"
 
 	"github.com/mehdieidi/storm/internal/domain"
 	"github.com/mehdieidi/storm/pkg/cache"
+	"github.com/mehdieidi/storm/pkg/pick"
 	"github.com/mehdieidi/storm/pkg/type/id"
 	"github.com/mehdieidi/storm/pkg/type/offlim"
-	"github.com/mehdieidi/storm/pkg/update"
 )
 
 type user struct {
@@ -57,12 +57,12 @@ func (s *user) Update(ctx context.Context, uID id.ID[domain.User], newUser domai
 		return err
 	}
 
-	oldUser.FirstName = update.IfChanged(oldUser.FirstName, newUser.FirstName)
-	oldUser.LastName = update.IfChanged(oldUser.LastName, newUser.LastName)
-	oldUser.Email = update.IfChanged(oldUser.Email, newUser.Email)
-	oldUser.MobileNumber = update.IfChanged(oldUser.MobileNumber, newUser.MobileNumber)
-	oldUser.HashedPassword = update.IfChanged(oldUser.HashedPassword, newUser.HashedPassword)
-	oldUser.Avatar = update.IfNilChanged(oldUser.Avatar, newUser.Avatar)
+	oldUser.FirstName = pick.IfChanged(oldUser.FirstName, newUser.FirstName)
+	oldUser.LastName = pick.IfChanged(oldUser.LastName, newUser.LastName)
+	oldUser.Email = pick.IfChanged(oldUser.Email, newUser.Email)
+	oldUser.MobileNumber = pick.IfChanged(oldUser.MobileNumber, newUser.MobileNumber)
+	oldUser.HashedPassword = pick.IfChanged(oldUser.HashedPassword, newUser.HashedPassword)
+	oldUser.Avatar = pick.IfSome(oldUser.Avatar, newUser.Avatar)
 
 	if err := s.userPostgres.Update(ctx, uID, oldUser); err != nil {
 		return err

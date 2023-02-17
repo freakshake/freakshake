@@ -8,14 +8,13 @@ var (
 )
 
 var (
-	ErrInvalidRequest     = errors.New("invalid request")
-	ErrInvalidCredentials = errors.New("invalid credentials")
-	ErrInvalidFirstName   = errors.New("invalid first name")
-	ErrInvalidLastName    = errors.New("invalid last name")
-	ErrInvalidFileID      = errors.New("invalid file id")
-	ErrInvalidTime        = errors.New("invalid time")
-	ErrInvalidOffset      = errors.New("invalid offset")
-	ErrInvalidLimit       = errors.New("invalid limit")
+	ErrInvalidRequest   = errors.New("invalid request")
+	ErrInvalidFirstName = errors.New("invalid first name")
+	ErrInvalidLastName  = errors.New("invalid last name")
+	ErrInvalidFileID    = errors.New("invalid file id")
+	ErrInvalidTime      = errors.New("invalid time")
+	ErrInvalidOffset    = errors.New("invalid offset")
+	ErrInvalidLimit     = errors.New("invalid limit")
 )
 
 var (

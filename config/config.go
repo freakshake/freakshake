@@ -7,42 +7,42 @@ import (
 )
 
 type Postgres struct {
-	Host           string
-	Port           string
-	User           string
-	Password       string
-	DB             string
+	Host           string `mapstructure:"host"`
+	Port           string `mapstructure:"port"`
+	User           string `mapstructure:"user"`
+	Password       string `mapstructure:"password"`
+	DB             string `mapstructure:"db"`
 	MigrationsPath string `mapstructure:"migrations-path"`
 }
 
 type Redis struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
 }
 
 type Mongo struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DB       string
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	DB       string `mapstructure:"db"`
 }
 
 type HTTPServer struct {
-	IP   string
-	Port string
+	IP   string `mapstructure:"ip"`
+	Port string `mapstructure:"port"`
 }
 
 type Config struct {
-	Postgres
-	Redis
-	Mongo
+	Postgres   `mapstructure:"postgres"`
+	Redis      `mapstructure:"redis"`
+	Mongo      `mapstructure:"mongo"`
 	HTTPServer `mapstructure:"http-server"`
 }
 
-func Read() (*Config, error) {
+func Read() (Config, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("MEDAD")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
@@ -52,13 +52,13 @@ func Read() (*Config, error) {
 	viper.AddConfigPath("./config/")
 
 	if err := viper.ReadInConfig(); err != nil {
-		return nil, err
+		return Config{}, err
 	}
 
 	var c Config
 	if err := viper.Unmarshal(&c); err != nil {
-		return nil, err
+		return Config{}, err
 	}
 
-	return &c, nil
+	return c, nil
 }

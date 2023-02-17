@@ -1,4 +1,4 @@
-package repository
+package storage
 
 import (
 	"context"
@@ -21,25 +21,25 @@ func NewUserMongoStorage(c *mongo.Client) domain.UserStorage {
 
 func (s *userMongo) Store(ctx context.Context, u domain.User) (id.ID[domain.User], error) {
 	// TODO
-	return 0, nil
+	panic("todo")
 }
 
 func (s *userMongo) Find(ctx context.Context, uID id.ID[domain.User]) (domain.User, error) {
 	// TODO
-	return domain.User{}, nil
+	panic("todo")
 }
 
 func (s *userMongo) FindAll(ctx context.Context, o offlim.Offset, l offlim.Limit) ([]domain.User, error) {
 	// TODO
-	return nil, nil
+	panic("todo")
 }
 
 func (s *userMongo) Update(ctx context.Context, uID id.ID[domain.User], u domain.User) error {
 	// TODO
-	return nil
+	panic("todo")
 }
 
 func (s *userMongo) Delete(ctx context.Context, uID id.ID[domain.User]) error {
 	// TODO
-	return nil
+	panic("todo")
 }

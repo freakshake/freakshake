@@ -1,4 +1,6 @@
-package update
+package pick
+
+import "github.com/mehdieidi/storm/pkg/type/optional"
 
 func IfChanged[T comparable](oldData, newData T) (empty T) {
 	if newData != empty {
@@ -10,6 +12,13 @@ func IfChanged[T comparable](oldData, newData T) (empty T) {
 func IfNilChanged[T comparable](oldData, newData *T) *T {
 	var empty T
 	if newData != nil && *newData != empty {
+		return newData
+	}
+	return oldData
+}
+
+func IfSome[T any](oldData, newData optional.Optional[T]) optional.Optional[T] {
+	if newData.IsSome() {
 		return newData
 	}
 	return oldData
