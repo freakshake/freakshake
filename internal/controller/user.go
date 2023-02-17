@@ -58,6 +58,16 @@ func (c createUserRequest) validate() error {
 	return nil
 }
 
+// @Summary     new user
+// @Description create a user.
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Param       user body     createUserRequest true "User"
+// @Success     200  {object} domain.User
+// @Failure     400  {object} map[string]string{error=string} "Invalid request"
+// @Failure     500  {object} map[string]string{error=string} "Internal server error"
+// @Router      /users [post]
 func (u *user) createHandler(c echo.Context) error {
 	var req createUserRequest
 	if err := c.Bind(&req); err != nil {

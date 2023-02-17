@@ -19,8 +19,8 @@ fmt:
 lint:
 	golangci-lint run --config "./config/.golangci.yaml"
 
-doc:
-	swag i --pd 
+swagger:
+	swag init --dir ./cmd/service/ --output ./api/swagger --parseDependency 
 
 build-http:
 	go build -o medad ./cmd/service/
@@ -66,4 +66,4 @@ create-migration:
 fix-migrate:
 	migrate -database "$(POSTGRES_DB_URL)" -path "$(MIGRATIONS_PATH)" force $(VERSION)
 
-pipeline: tidy doc fmt build server
+pipeline: tidy swagger fmt build-http run-http

@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	_ "github.com/mehdieidi/storm/api/swagger"
+	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"github.com/mehdieidi/storm/config"
 	"github.com/mehdieidi/storm/internal/controller"
@@ -21,6 +23,8 @@ import (
 	httpserver "github.com/mehdieidi/storm/transport/server/http"
 )
 
+// @title    Medad Backend Service
+// @BasePath /api
 func main() {
 	cfg, err := config.Read()
 	xerror.PanicIf(err)
@@ -61,6 +65,7 @@ func main() {
 	e := echo.New()
 
 	g := e.Group("/api/v1")
+	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	controller.UserRoutes(g, userService)
 
 	errCh := make(chan error, 1)

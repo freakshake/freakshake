@@ -19,3 +19,4 @@ logs.log
 uploads/*
 shell.nix
 medad
+api/swagger/*

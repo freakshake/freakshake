@@ -57,7 +57,7 @@ func (o Optional[T]) Value() (driver.Value, error) {
 	if o.IsNone() {
 		return nil, nil
 	}
-	
+
 	val, err := driver.DefaultParameterConverter.ConvertValue(o.value)
 	xerror.Wrap(&err, "%T.Value()", o)
 
