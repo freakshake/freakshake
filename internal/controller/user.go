@@ -31,7 +31,7 @@ func UserRoutes(g *echo.Group, userService domain.UserService) {
 }
 
 type createUserRequest struct {
-	Avatar       optional.Optional[file.FileID] `json:"avatar"`
+	Avatar       optional.Optional[file.FileID] `json:"avatar" swaggertype:"string"`
 	FirstName    string                         `json:"first_name"`
 	LastName     string                         `json:"last_name"`
 	Email        email.Email                    `json:"email"`
