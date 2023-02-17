@@ -95,6 +95,16 @@ func (u *user) createHandler(c echo.Context) error {
 	return c.JSON(200, user)
 }
 
+// @Summary     get user by id
+// @Description get user by id.
+// @Tags        User
+// @Produce     json
+// @Param       id  path     uint true "User ID"
+// @Success     200 {object} domain.User
+// @Failure     400 {object} map[string]string{error=string} "Invalid request"
+// @Failure     500 {object} map[string]string{error=string} "Internal server error"
+// @Failure     404 {object} map[string]string{error=string} "unknown user"
+// @Router      /users/:id [get]
 func (u *user) getHandler(c echo.Context) error {
 	uID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -114,6 +124,16 @@ type listUsersRequest struct {
 	Limit  offlim.Limit  `query:"limit"`
 }
 
+// @Summary     list users
+// @Description list users.
+// @Tags        User
+// @Produce     json
+// @Param       offset query    uint false "Offset"
+// @Param       limit  query    uint false "Limit"
+// @Success     200    {object} []domain.User
+// @Failure     400    {object} map[string]string{error=string} "Invalid request"
+// @Failure     500    {object} map[string]string{error=string} "Internal server error"
+// @Router      /users [get]
 func (u *user) listHandler(c echo.Context) (err error) {
 	var req listUsersRequest
 	if err := c.Bind(&req); err != nil {
@@ -129,12 +149,70 @@ func (u *user) listHandler(c echo.Context) (err error) {
 	return c.JSON(200, users)
 }
 
-func (u *user) updateHandler(c echo.Context) error {
-	// TODO
-	panic("todo")
+type updateUserRequest struct {
+	ID           id.ID[domain.User]             `json:"id" swaggertype:"integer"`
+	Avatar       optional.Optional[file.FileID] `json:"avatar" swaggertype:"string"`
+	FirstName    string                         `json:"first_name"`
+	LastName     string                         `json:"last_name"`
+	Email        email.Email                    `json:"email"`
+	MobileNumber mobile.MobileNumber            `json:"mobile_number"`
 }
 
+// @Summary     update user
+// @Description update a user.
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Param       user body     updateUserRequest true "User"
+// @Success     200  {object} bool
+// @Failure     400  {object} map[string]string{error=string} "Invalid request"
+// @Failure     500  {object} map[string]string{error=string} "Internal server error"
+// @Failure     404  {object} map[string]string{error=string} "unknown user"
+// @Router      /users [patch]
+func (u *user) updateHandler(c echo.Context) error {
+	var req updateUserRequest
+	if err := c.Bind(&req); err != nil {
+		c.String(500, err.Error())
+		return err
+	}
+
+	user := domain.User{
+		Avatar:       req.Avatar,
+		FirstName:    req.FirstName,
+		LastName:     req.LastName,
+		Email:        req.Email,
+		MobileNumber: req.MobileNumber,
+	}
+
+	if err := u.userService.Update(c.Request().Context(), req.ID, user); err != nil {
+		c.String(500, err.Error())
+		return err
+	}
+
+	return c.JSON(200, true)
+}
+
+// @Summary     delete user
+// @Description delete a user.
+// @Tags        User
+// @Produce     json
+// @Param       id  path     uint true "User ID"
+// @Success     200 {object} bool
+// @Failure     400 {object} map[string]string{error=string} "Invalid request"
+// @Failure     500 {object} map[string]string{error=string} "Internal server error"
+// @Failure     404 {object} map[string]string{error=string} "unknown user"
+// @Router      /users/:id [delete]
 func (u *user) deleteHandler(c echo.Context) error {
-	// TODO
-	panic("todo")
+	uID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.String(500, err.Error())
+		return err
+	}
+
+	if err := u.userService.Delete(c.Request().Context(), id.ID[domain.User](uID)); err != nil {
+		c.String(500, err.Error())
+		return err
+	}
+
+	return c.JSON(200, true)
 }
