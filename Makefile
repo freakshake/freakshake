@@ -23,10 +23,10 @@ swagger:
 	swag init --dir ./cmd/service/ --output ./api/swagger --parseDependency 
 
 build-http:
-	go build -o medad ./cmd/service/
+	go build -o storm ./cmd/service/
 
 run-http:
-	./medad
+	./storm
 
 postgres-container:
 	docker run --name $(POSTGRES_CONTAINER) -p $(POSTGRES_PORT):5432 -e POSTGRES_USER=$(POSTGRES_USER) -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -d postgres:alpine

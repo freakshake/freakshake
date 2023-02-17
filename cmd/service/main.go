@@ -23,7 +23,7 @@ import (
 	httpserver "github.com/mehdieidi/storm/transport/server/http"
 )
 
-// @title    Medad Backend Service
+// @title    Storm Backend Service
 // @BasePath /api
 func main() {
 	cfg, err := config.Read()

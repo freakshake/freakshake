@@ -17,7 +17,7 @@ mongo:
   port: 27017
   user:
   password:
-  db: dbsermovie
+  db: test_db
 
 http-server:
   ip: localhost

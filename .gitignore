@@ -18,5 +18,5 @@
 logs.log
 uploads/*
 shell.nix
-medad
+storm
 api/swagger/*
