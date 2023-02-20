@@ -30,6 +30,7 @@ type User struct {
 type UserStorage interface {
 	Store(context.Context, User) (id.ID[User], error)
 	Find(context.Context, id.ID[User]) (User, error)
+	FindByEmail(context.Context, email.Email) (User, error)
 	FindAll(context.Context, offlim.Offset, offlim.Limit) ([]User, error)
 	Update(context.Context, id.ID[User], User) error
 	Delete(context.Context, id.ID[User]) error
@@ -38,6 +39,7 @@ type UserStorage interface {
 type UserService interface {
 	Create(context.Context, User) (User, error)
 	Get(context.Context, id.ID[User]) (User, error)
+	GetByEmail(context.Context, email.Email) (User, error)
 	List(context.Context, offlim.Offset, offlim.Limit) ([]User, error)
 	Update(context.Context, id.ID[User], User) error
 	Delete(context.Context, id.ID[User]) error

@@ -3,8 +3,11 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"errors"
 
+	"github.com/mehdieidi/storm/internal/derror"
 	"github.com/mehdieidi/storm/internal/domain"
+	"github.com/mehdieidi/storm/pkg/type/email"
 	"github.com/mehdieidi/storm/pkg/type/id"
 	"github.com/mehdieidi/storm/pkg/type/offlim"
 	"github.com/mehdieidi/storm/pkg/xsql"
@@ -106,6 +109,23 @@ func (s *userPostgres) Find(ctx context.Context, uID id.ID[domain.User]) (domain
 
 	u, err := xsql.QueryOne(ctx, s.db, scanUser, query, uID)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			err = derror.ErrUnknownUser
+		}
+		return domain.User{}, err
+	}
+
+	return u, nil
+}
+
+func (s *userPostgres) FindByEmail(ctx context.Context, e email.Email) (domain.User, error) {
+	query := selectQuery + `WHERE email = $1 AND deleted_at IS NULL LIMIT 1`
+
+	u, err := xsql.QueryOne(ctx, s.db, scanUser, query, e)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			err = derror.ErrUnknownUser
+		}
 		return domain.User{}, err
 	}
 
@@ -122,6 +142,9 @@ func (s *userPostgres) FindAll(ctx context.Context, o offlim.Offset, l offlim.Li
 
 	u, err := xsql.QueryMany(ctx, s.db, scanUser, query, o, limit)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			err = derror.ErrUnknownUser
+		}
 		return nil, err
 	}
 

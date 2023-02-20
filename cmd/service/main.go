@@ -60,6 +60,7 @@ func main() {
 
 	// Service (usecase) layer.
 	userService := service.NewUserService(userPostgresStorage, userMongoStorage, cache)
+	authService := service.NewAuthService(cfg.Auth.SecretKey, cfg.Auth.TokenExpirationHours, userService)
 
 	// HTTP transport layer.
 	e := echo.New()
@@ -67,6 +68,7 @@ func main() {
 	g := e.Group("/api/v1")
 	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	controller.UserRoutes(g, userService)
+	controller.AuthRoutes(g, authService)
 
 	errCh := make(chan error, 1)
 

@@ -1,6 +1,8 @@
 package derror
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
 	ErrUnknownFile = errors.New("unknown file")
@@ -8,13 +10,14 @@ var (
 )
 
 var (
-	ErrInvalidRequest   = errors.New("invalid request")
-	ErrInvalidFirstName = errors.New("invalid first name")
-	ErrInvalidLastName  = errors.New("invalid last name")
-	ErrInvalidFileID    = errors.New("invalid file id")
-	ErrInvalidTime      = errors.New("invalid time")
-	ErrInvalidOffset    = errors.New("invalid offset")
-	ErrInvalidLimit     = errors.New("invalid limit")
+	ErrInvalidRequest     = errors.New("invalid request")
+	ErrInvalidFirstName   = errors.New("invalid first name")
+	ErrInvalidLastName    = errors.New("invalid last name")
+	ErrInvalidFileID      = errors.New("invalid file id")
+	ErrInvalidTime        = errors.New("invalid time")
+	ErrInvalidOffset      = errors.New("invalid offset")
+	ErrInvalidLimit       = errors.New("invalid limit")
+	ErrInvalidCredentials = errors.New("invalid credentials")
 )
 
 var (
@@ -23,4 +26,5 @@ var (
 	ErrInaccessibility = errors.New("inaccessibility error")
 	ErrUsernameExists  = errors.New("username already exists")
 	ErrInternal        = errors.New("internal server error")
+	ErrUserExists      = errors.New("user already exists")
 )

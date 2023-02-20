@@ -17,6 +17,6 @@ func (p Password) Hash() ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(p), bcrypt.DefaultCost)
 }
 
-func (p Password) CompareWithHashPassword(hash string) bool {
+func (p Password) CompareWithHashedPassword(hash string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(p)) == nil
 }

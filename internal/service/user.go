@@ -6,6 +6,7 @@ import (
 	"github.com/mehdieidi/storm/internal/domain"
 	"github.com/mehdieidi/storm/pkg/cache"
 	"github.com/mehdieidi/storm/pkg/pick"
+	"github.com/mehdieidi/storm/pkg/type/email"
 	"github.com/mehdieidi/storm/pkg/type/id"
 	"github.com/mehdieidi/storm/pkg/type/offlim"
 )
@@ -45,6 +46,10 @@ func (s *user) Create(ctx context.Context, u domain.User) (domain.User, error) {
 
 func (s *user) Get(ctx context.Context, uID id.ID[domain.User]) (domain.User, error) {
 	return s.userPostgres.Find(ctx, uID)
+}
+
+func (s *user) GetByEmail(ctx context.Context, e email.Email) (domain.User, error) {
+	return s.userPostgres.FindByEmail(ctx, e)
 }
 
 func (s *user) List(ctx context.Context, o offlim.Offset, l offlim.Limit) ([]domain.User, error) {

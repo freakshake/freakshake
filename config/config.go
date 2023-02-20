@@ -35,11 +35,17 @@ type HTTPServer struct {
 	Port string `mapstructure:"port"`
 }
 
+type Auth struct {
+	SecretKey            string `mapstructure:"secret-key"`
+	TokenExpirationHours uint   `mapstructure:"token-expiration-hours"`
+}
+
 type Config struct {
 	Postgres   `mapstructure:"postgres"`
 	Redis      `mapstructure:"redis"`
 	Mongo      `mapstructure:"mongo"`
 	HTTPServer `mapstructure:"http-server"`
+	Auth       `mapstructure:"auth"`
 }
 
 func Read() (Config, error) {

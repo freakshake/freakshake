@@ -68,7 +68,7 @@ func (c createUserRequest) validate() error {
 // @Failure     400  {object} map[string]string{error=string} "Invalid request"
 // @Failure     500  {object} map[string]string{error=string} "Internal server error"
 // @Router      /users [post]
-func (u *user) createHandler(c echo.Context) error {
+func (u user) createHandler(c echo.Context) error {
 	var req createUserRequest
 	if err := c.Bind(&req); err != nil {
 		return c.String(500, err.Error())
@@ -105,7 +105,7 @@ func (u *user) createHandler(c echo.Context) error {
 // @Failure     500 {object} map[string]string{error=string} "Internal server error"
 // @Failure     404 {object} map[string]string{error=string} "unknown user"
 // @Router      /users/:id [get]
-func (u *user) getHandler(c echo.Context) error {
+func (u user) getHandler(c echo.Context) error {
 	uID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.String(500, err.Error())
@@ -134,7 +134,7 @@ type listUsersRequest struct {
 // @Failure     400    {object} map[string]string{error=string} "Invalid request"
 // @Failure     500    {object} map[string]string{error=string} "Internal server error"
 // @Router      /users [get]
-func (u *user) listHandler(c echo.Context) (err error) {
+func (u user) listHandler(c echo.Context) (err error) {
 	var req listUsersRequest
 	if err := c.Bind(&req); err != nil {
 		c.String(500, err.Error())
@@ -169,7 +169,7 @@ type updateUserRequest struct {
 // @Failure     500  {object} map[string]string{error=string} "Internal server error"
 // @Failure     404  {object} map[string]string{error=string} "unknown user"
 // @Router      /users [patch]
-func (u *user) updateHandler(c echo.Context) error {
+func (u user) updateHandler(c echo.Context) error {
 	var req updateUserRequest
 	if err := c.Bind(&req); err != nil {
 		c.String(500, err.Error())
@@ -202,7 +202,7 @@ func (u *user) updateHandler(c echo.Context) error {
 // @Failure     500 {object} map[string]string{error=string} "Internal server error"
 // @Failure     404 {object} map[string]string{error=string} "unknown user"
 // @Router      /users/:id [delete]
-func (u *user) deleteHandler(c echo.Context) error {
+func (u user) deleteHandler(c echo.Context) error {
 	uID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.String(500, err.Error())
