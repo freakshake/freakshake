@@ -11,7 +11,7 @@ var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z
 type Email string
 
 func (e Email) Validate() error {
-	if len(e) < 3 && len(e) > 254 {
+	if len(e) < 6 || len(e) > 254 {
 		return ErrInvalidEmail
 	}
 
