@@ -1,4 +1,17 @@
-package log
+package logger
+
+const (
+	LogErrKey  = "err"
+	LogRespKey = "response"
+)
+
+const (
+	DomainJSONKey = "domain"
+	LayerJSONKey  = "layer"
+	MethodJSONKey = "method"
+	TraceJSONKey  = "trace"
+	LevelJSONKey  = "level"
+)
 
 type Args map[string]any
 
