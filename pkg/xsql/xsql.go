@@ -39,7 +39,7 @@ func QueryOne[T any](
 	query string,
 	args ...any,
 ) (_ T, err error) {
-	defer xerror.Wrap(&err, "QueryOne(ctx, db, scan, query, %v)", args)
+	defer xerror.Wrap(&err, "QueryOne(ctx, db, scan, query, %v)", args...)
 
 	row := db.QueryRowContext(ctx, query, args...)
 	return scan(row)
@@ -77,7 +77,7 @@ func QueryMany[T any](
 	query string,
 	args ...any,
 ) (_ []T, err error) {
-	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, query, %v)", args)
+	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, query, %v)", args...)
 
 	rows, err := db.QueryContext(ctx, query, args...)
 	if err != nil {

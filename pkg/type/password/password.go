@@ -4,10 +4,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const minLength = 8
+
 type Password string
 
 func (p Password) Validate() error {
-	if len(p) < 8 {
+	if len(p) < minLength {
 		return ErrInvalidPassword
 	}
 	return nil

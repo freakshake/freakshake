@@ -46,11 +46,11 @@ func (g *Gender) UnmarshalText(p []byte) error {
 	return nil
 }
 
-func JoinGenders(genders []Gender, sep string) (joined string) {
+func JoinGenders(genders []Gender, sep string) string {
+	var joined string
 	for i := 0; i < len(genders)-1; i++ {
 		joined += strconv.Itoa(int(genders[i])) + sep
 	}
 	joined += strconv.Itoa(int(genders[len(genders)-1]))
-
-	return
+	return joined
 }

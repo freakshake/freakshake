@@ -4,9 +4,9 @@ import "regexp"
 
 var mobileRegex = regexp.MustCompile(`^(0)?(\d{10})$`)
 
-type MobileNumber string
+type Number string
 
-func (m MobileNumber) Validate() error {
+func (m Number) Validate() error {
 	if !mobileRegex.MatchString(string(m)) {
 		return ErrInvalidMobileNumber
 	}

@@ -28,8 +28,8 @@ func (d *Date) Scan(v interface{}) error {
 	return nil
 }
 
-func (b Date) MarshalText() ([]byte, error) {
-	t := time.Time(b)
+func (d Date) MarshalText() ([]byte, error) {
+	t := time.Time(d)
 	return []byte(fmt.Sprintf("%04d-%02d-%02d", t.Year(), t.Month(), t.Day())), nil
 }
 

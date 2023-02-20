@@ -9,14 +9,14 @@ import (
 	"github.com/mehdieidi/storm/pkg/type/optional"
 )
 
-type FileID string
+type ID string
 
-func NewFileID() FileID {
-	return FileID(uuid.NewString())
+func NewFileID() ID {
+	return ID(uuid.NewString())
 }
 
-type FileInfo struct {
-	ID        FileID                       `json:"id"`
+type Info struct {
+	ID        ID                           `json:"id"`
 	Name      string                       `json:"name"`
 	Type      string                       `json:"type"`
 	Size      ByteSize                     `json:"size"`
@@ -24,15 +24,15 @@ type FileInfo struct {
 	DeletedAt optional.Optional[time.Time] `json:"deleted_at"`
 }
 
-type FileService interface {
-	Upload(context.Context, FileInfo, io.Reader) (FileID, error)
-	Get(context.Context, FileID) (io.ReadCloser, error)
-	GetFileInfo(context.Context, FileID) (FileInfo, error)
-	Delete(context.Context, FileID) error
+type Service interface {
+	Upload(context.Context, Info, io.Reader) (ID, error)
+	Get(context.Context, ID) (io.ReadCloser, error)
+	GetFileInfo(context.Context, ID) (Info, error)
+	Delete(context.Context, ID) error
 }
 
-type FileStorage interface {
-	Store(context.Context, FileInfo) (FileID, error)
-	Find(context.Context, FileID) (FileInfo, error)
-	Delete(context.Context, FileID) error
+type Storage interface {
+	Store(context.Context, Info) (ID, error)
+	Find(context.Context, ID) (Info, error)
+	Delete(context.Context, ID) error
 }

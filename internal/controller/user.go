@@ -31,12 +31,12 @@ func UserRoutes(g *echo.Group, userService domain.UserService) {
 }
 
 type createUserRequest struct {
-	Avatar       optional.Optional[file.FileID] `json:"avatar" swaggertype:"string"`
-	FirstName    string                         `json:"first_name"`
-	LastName     string                         `json:"last_name"`
-	Email        email.Email                    `json:"email"`
-	MobileNumber mobile.MobileNumber            `json:"mobile_number"`
-	Password     password.Password              `json:"password"`
+	Avatar       optional.Optional[file.ID] `json:"avatar" swaggertype:"string"`
+	FirstName    string                     `json:"first_name"`
+	LastName     string                     `json:"last_name"`
+	Email        email.Email                `json:"email"`
+	MobileNumber mobile.Number              `json:"mobile_number"`
+	Password     password.Password          `json:"password"`
 }
 
 func (c createUserRequest) validate() error {
@@ -134,7 +134,7 @@ type listUsersRequest struct {
 // @Failure     400    {object} map[string]string{error=string} "Invalid request"
 // @Failure     500    {object} map[string]string{error=string} "Internal server error"
 // @Router      /users [get]
-func (u user) listHandler(c echo.Context) (err error) {
+func (u user) listHandler(c echo.Context) error {
 	var req listUsersRequest
 	if err := c.Bind(&req); err != nil {
 		c.String(500, err.Error())
@@ -150,12 +150,12 @@ func (u user) listHandler(c echo.Context) (err error) {
 }
 
 type updateUserRequest struct {
-	ID           id.ID[domain.User]             `json:"id" swaggertype:"integer"`
-	Avatar       optional.Optional[file.FileID] `json:"avatar" swaggertype:"string"`
-	FirstName    string                         `json:"first_name"`
-	LastName     string                         `json:"last_name"`
-	Email        email.Email                    `json:"email"`
-	MobileNumber mobile.MobileNumber            `json:"mobile_number"`
+	ID           id.ID[domain.User]         `json:"id" swaggertype:"integer"`
+	Avatar       optional.Optional[file.ID] `json:"avatar" swaggertype:"string"`
+	FirstName    string                     `json:"first_name"`
+	LastName     string                     `json:"last_name"`
+	Email        email.Email                `json:"email"`
+	MobileNumber mobile.Number              `json:"mobile_number"`
 }
 
 // @Summary     update user

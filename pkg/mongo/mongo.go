@@ -2,7 +2,7 @@ package mongo
 
 import (
 	"context"
-	"fmt"
+	"net"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,10 +18,7 @@ type ConnectionString struct {
 }
 
 func (d ConnectionString) String() string {
-	return fmt.Sprintf("mongodb://%s:%s",
-		d.Host,
-		d.Port,
-	)
+	return "mongodb://" + net.JoinHostPort(d.Host, d.Port)
 }
 
 func NewClient(s ConnectionString) (*mongo.Client, error) {

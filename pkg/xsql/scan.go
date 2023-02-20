@@ -8,7 +8,7 @@ type Scanner interface {
 }
 
 func ScanID[T any](s Scanner) (id T, err error) {
-	if err := s.Scan(&id); err != nil {
+	if err = s.Scan(&id); err != nil {
 		return id, err
 	}
 	return id, nil

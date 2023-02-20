@@ -14,17 +14,17 @@ import (
 )
 
 type User struct {
-	ID             id.ID[User]                    `json:"id" swaggertype:"integer"`
-	FirstName      string                         `json:"first_name"`
-	LastName       string                         `json:"last_name"`
-	Email          email.Email                    `json:"email"`
-	MobileNumber   mobile.MobileNumber            `json:"mobile_number"`
-	Password       password.Password              `json:"-"`
-	HashedPassword string                         `json:"-"`
-	Avatar         optional.Optional[file.FileID] `json:"avatar" swaggertype:"string"`
-	CreatedAt      time.Time                      `json:"created_at"`
-	UpdatedAt      optional.Optional[time.Time]   `json:"updated_at" swaggertype:"string"`
-	DeletedAt      optional.Optional[time.Time]   `json:"deleted_at" swaggertype:"string"`
+	ID             id.ID[User]                  `json:"id" swaggertype:"integer"`
+	FirstName      string                       `json:"first_name"`
+	LastName       string                       `json:"last_name"`
+	Email          email.Email                  `json:"email"`
+	MobileNumber   mobile.Number                `json:"mobile_number"`
+	Password       password.Password            `json:"-"`
+	HashedPassword string                       `json:"-"`
+	Avatar         optional.Optional[file.ID]   `json:"avatar" swaggertype:"string"`
+	CreatedAt      time.Time                    `json:"created_at"`
+	UpdatedAt      optional.Optional[time.Time] `json:"updated_at" swaggertype:"string"`
+	DeletedAt      optional.Optional[time.Time] `json:"deleted_at" swaggertype:"string"`
 }
 
 type UserStorage interface {
