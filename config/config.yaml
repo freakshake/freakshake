@@ -22,7 +22,14 @@ mongo:
 http-server:
   ip: localhost
   port: 6969
+  read-timeout: 5
+  read-header-timeout: 4
+  write-timeout: 10
+  idle-timeout: 20
 
 auth:
   secret-key: khoorshidPooshteshBeMast
   token-expiration-hours: 72 
+
+log:
+  file-name: logs.log

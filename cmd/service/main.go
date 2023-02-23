@@ -3,20 +3,23 @@ package main
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"github.com/labstack/echo/v4"
-	_ "github.com/mehdieidi/storm/api/swagger"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
+	_ "github.com/mehdieidi/storm/api/swagger"
 	"github.com/mehdieidi/storm/config"
 	"github.com/mehdieidi/storm/internal/controller"
 	"github.com/mehdieidi/storm/internal/service"
 	"github.com/mehdieidi/storm/internal/storage"
 	"github.com/mehdieidi/storm/pkg/cache/redis"
+	"github.com/mehdieidi/storm/pkg/logger/zerolog"
 	"github.com/mehdieidi/storm/pkg/mongo"
 	"github.com/mehdieidi/storm/pkg/postgres"
 	"github.com/mehdieidi/storm/pkg/xerror"
@@ -54,6 +57,12 @@ func main() {
 	xerror.PanicIf(mongo.Ping(mongoClient))
 	defer mongoClient.Disconnect(context.Background())
 
+	logFile, err := os.OpenFile(cfg.Log.FileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	xerror.PanicIf(err)
+	defer logFile.Close()
+
+	logger := zerolog.New(logFile)
+
 	// Storage (repository) layer.
 	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB)
 	userMongoStorage := storage.NewUserMongoStorage(mongoClient)
@@ -67,12 +76,21 @@ func main() {
 
 	g := e.Group("/api/v1")
 	g.GET("/swagger/*", echoSwagger.WrapHandler)
-	controller.UserRoutes(g, userService)
+	controller.UserRoutes(g, userService, logger)
 	controller.AuthRoutes(g, authService)
 
 	errCh := make(chan error, 1)
 
-	httpServer := httpserver.Listen(e, errCh, cfg.HTTPServer.IP, cfg.HTTPServer.Port)
+	httpServer := &http.Server{
+		ReadTimeout:       cfg.HTTPServer.ReadTimeout,
+		WriteTimeout:      cfg.HTTPServer.WriteTimeout,
+		IdleTimeout:       cfg.HTTPServer.IdleTimeout,
+		ReadHeaderTimeout: cfg.HTTPServer.ReadHeaderTimeout,
+		Addr:              net.JoinHostPort(cfg.HTTPServer.IP, cfg.HTTPServer.Port),
+		Handler:           e,
+	}
+
+	httpserver.SpawnListener(httpServer, errCh)
 
 	// Graceful shutdown in case of common signals.
 	ctx, stop := signal.NotifyContext(

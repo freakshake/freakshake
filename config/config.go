@@ -2,6 +2,7 @@ package config
 
 import (
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -31,13 +32,21 @@ type Mongo struct {
 }
 
 type HTTPServer struct {
-	IP   string `mapstructure:"ip"`
-	Port string `mapstructure:"port"`
+	IP                string        `mapstructure:"ip"`
+	Port              string        `mapstructure:"port"`
+	ReadTimeout       time.Duration `mapstructure:"read-timeout"`
+	ReadHeaderTimeout time.Duration `mapstructure:"read-header-timeout"`
+	WriteTimeout      time.Duration `mapstructure:"write-timeout"`
+	IdleTimeout       time.Duration `mapstructure:"idle-timeout"`
 }
 
 type Auth struct {
 	SecretKey            string `mapstructure:"secret-key"`
 	TokenExpirationHours uint   `mapstructure:"token-expiration-hours"`
+}
+
+type Log struct {
+	FileName string `mapstructure:"file-name"`
 }
 
 type Config struct {
@@ -46,6 +55,7 @@ type Config struct {
 	Mongo      `mapstructure:"mongo"`
 	HTTPServer `mapstructure:"http-server"`
 	Auth       `mapstructure:"auth"`
+	Log        `mapstructure:"log"`
 }
 
 func Read() (Config, error) {

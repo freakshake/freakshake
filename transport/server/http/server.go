@@ -3,28 +3,14 @@ package httpserver
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
-func Listen(h http.Handler, errCh chan error, ip, port string) *http.Server {
-	addr := ip + ":" + port
-
-	srv := &http.Server{
-		ReadTimeout:       5 * time.Second,
-		WriteTimeout:      5 * time.Second,
-		IdleTimeout:       30 * time.Second,
-		ReadHeaderTimeout: 3 * time.Second,
-		Addr:              addr,
-		Handler:           h,
-	}
-
+func SpawnListener(srv *http.Server, errCh chan error) {
 	go func() {
-		fmt.Println("[+] HTTP server listening on", addr)
+		fmt.Println("[+] HTTP server listening on", srv.Addr)
 
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			errCh <- err
 		}
 	}()
-
-	return srv
 }

@@ -32,7 +32,7 @@ func (z zeroLog) Info(domain string, layer logger.Layer, method string, args log
 		Str(logger.MethodJSONKey, method)
 
 	for k, v := range args {
-		e.Str(k, fmt.Sprintf("%v", v))
+		e.Str(k, fmt.Sprintf("%+v", v))
 	}
 
 	e.Msg("")
@@ -45,7 +45,7 @@ func (z zeroLog) Error(domain string, layer logger.Layer, method string, args lo
 		Str(logger.MethodJSONKey, method)
 
 	for k, v := range args {
-		e.Str(k, fmt.Sprintf("%v", v))
+		e.Str(k, fmt.Sprintf("%+v", v))
 	}
 
 	e.Msg("")
@@ -60,7 +60,7 @@ func (z zeroLog) Panic(domain string, layer logger.Layer, method string, args lo
 		Str(logger.TraceJSONKey, string(debug.Stack()))
 
 	for k, v := range args {
-		e.Str(k, fmt.Sprintf("%v", v))
+		e.Str(k, fmt.Sprintf("%+v", v))
 	}
 
 	e.Msg("")

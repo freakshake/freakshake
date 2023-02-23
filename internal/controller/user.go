@@ -7,6 +7,7 @@ import (
 
 	"github.com/mehdieidi/storm/internal/derror"
 	"github.com/mehdieidi/storm/internal/domain"
+	"github.com/mehdieidi/storm/pkg/logger"
 	"github.com/mehdieidi/storm/pkg/type/email"
 	"github.com/mehdieidi/storm/pkg/type/file"
 	"github.com/mehdieidi/storm/pkg/type/id"
@@ -18,10 +19,11 @@ import (
 
 type user struct {
 	userService domain.UserService
+	logger      logger.Logger
 }
 
-func UserRoutes(g *echo.Group, userService domain.UserService) {
-	u := user{userService: userService}
+func UserRoutes(g *echo.Group, userService domain.UserService, logger logger.Logger) {
+	u := user{userService: userService, logger: logger}
 
 	g.POST("/users", u.createHandler)
 	g.GET("/users/:id", u.getHandler)
