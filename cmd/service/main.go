@@ -26,8 +26,8 @@ import (
 	httpserver "github.com/mehdieidi/storm/transport/server/http"
 )
 
-// @title    Storm Backend Service
-// @BasePath /api
+//	@title		Storm Backend Service
+//	@BasePath	/api
 func main() {
 	cfg, err := config.Read()
 	xerror.PanicIf(err)
@@ -82,13 +82,15 @@ func main() {
 	errCh := make(chan error, 1)
 
 	httpServer := &http.Server{
-		ReadTimeout:       cfg.HTTPServer.ReadTimeout,
-		WriteTimeout:      cfg.HTTPServer.WriteTimeout,
-		IdleTimeout:       cfg.HTTPServer.IdleTimeout,
-		ReadHeaderTimeout: cfg.HTTPServer.ReadHeaderTimeout,
+		ReadTimeout:       cfg.HTTPServer.ReadTimeout * time.Second,
+		WriteTimeout:      cfg.HTTPServer.WriteTimeout * time.Second,
+		IdleTimeout:       cfg.HTTPServer.IdleTimeout * time.Second,
+		ReadHeaderTimeout: cfg.HTTPServer.ReadHeaderTimeout * time.Second,
 		Addr:              net.JoinHostPort(cfg.HTTPServer.IP, cfg.HTTPServer.Port),
 		Handler:           e,
 	}
+
+	fmt.Printf("%+v", httpServer)
 
 	httpserver.SpawnListener(httpServer, errCh)
 
