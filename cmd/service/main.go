@@ -64,7 +64,7 @@ func main() {
 	logger := zerolog.New(logFile)
 
 	// Storage (repository) layer.
-	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB)
+	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB, logger)
 	userMongoStorage := storage.NewUserMongoStorage(mongoClient)
 
 	// Service (usecase) layer.
@@ -89,8 +89,6 @@ func main() {
 		Addr:              net.JoinHostPort(cfg.HTTPServer.IP, cfg.HTTPServer.Port),
 		Handler:           e,
 	}
-
-	fmt.Printf("%+v", httpServer)
 
 	httpserver.SpawnListener(httpServer, errCh)
 

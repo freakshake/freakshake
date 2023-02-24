@@ -3,6 +3,7 @@ package logger
 const (
 	LogErrKey  = "err"
 	LogRespKey = "response"
+	LogObjKey  = "obj"
 )
 
 const (
@@ -11,13 +12,16 @@ const (
 	MethodJSONKey = "method"
 	TraceJSONKey  = "trace"
 	LevelJSONKey  = "level"
+	FileJSONKey   = "file"
+	LineJSONKey   = "line"
+	CallerJSONKey = "caller"
 )
 
 type Args map[string]any
 
 type Logger interface {
 	PanicHandler()
-	Info(domain string, layer Layer, method string, args Args)
-	Error(domain string, layer Layer, method string, args Args)
-	Panic(domain string, layer Layer, method string, args Args)
+	Info(Domain, Layer, Args)
+	Error(Domain, Layer, error, Args)
+	Panic(Domain, Layer, Args)
 }

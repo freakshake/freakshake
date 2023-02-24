@@ -70,13 +70,15 @@ func (c createUserRequest) validate() error {
 //	@Failure		400		{object}	map[string]string{error=string}	"Invalid request"
 //	@Failure		500		{object}	map[string]string{error=string}	"Internal server error"
 //	@Router			/users [post]
-func (u user) createHandler(c echo.Context) error {
+func (u user) createHandler(c echo.Context) (err error) {
 	var req createUserRequest
 	if err := c.Bind(&req); err != nil {
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
 		return c.String(500, err.Error())
 	}
 
 	if err := req.validate(); err != nil {
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
 		return c.String(500, err.Error())
 	}
 
@@ -89,10 +91,13 @@ func (u user) createHandler(c echo.Context) error {
 		Password:     req.Password,
 	}
 
-	user, err := u.userService.Create(c.Request().Context(), user)
+	user, err = u.userService.Create(c.Request().Context(), user)
 	if err != nil {
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
 		return c.String(500, err.Error())
 	}
+
+	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"id": user.ID})
 
 	return c.JSON(200, user)
 }

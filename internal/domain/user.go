@@ -13,6 +13,8 @@ import (
 	"github.com/mehdieidi/storm/pkg/type/password"
 )
 
+const UserDomain = "user"
+
 type User struct {
 	ID             id.ID[User]                  `json:"id" swaggertype:"integer"`
 	FirstName      string                       `json:"first_name"`

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/mehdieidi/storm/pkg/xerror"
+	"github.com/pkg/errors"
 )
 
 // QueryOne is used to retrieve a single row from a database using the provided query and arguments.
@@ -39,8 +39,6 @@ func QueryOne[T any](
 	query string,
 	args ...any,
 ) (_ T, err error) {
-	defer xerror.Wrap(&err, "QueryOne(ctx, db, scan, query, %v)", args...)
-
 	row := db.QueryRowContext(ctx, query, args...)
 	return scan(row)
 }
@@ -77,8 +75,6 @@ func QueryMany[T any](
 	query string,
 	args ...any,
 ) (_ []T, err error) {
-	defer xerror.Wrap(&err, "QueryMany(ctx, db, scan, query, %v)", args...)
-
 	rows, err := db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
@@ -86,7 +82,7 @@ func QueryMany[T any](
 	defer func() {
 		cerr := rows.Close()
 		if cerr != nil {
-			xerror.Wrap(&err, "rows.Close()")
+			errors.Wrap(err, cerr.Error())
 		}
 	}()
 

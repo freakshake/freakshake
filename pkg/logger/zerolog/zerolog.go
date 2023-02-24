@@ -1,6 +1,7 @@
 package zerolog
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"runtime/debug"
@@ -21,28 +22,40 @@ func New(w io.Writer) logger.Logger {
 
 func (z zeroLog) PanicHandler() {
 	if r := recover(); r != nil {
-		z.Panic("unknown", logger.UnsetLayer, "unknown", logger.Args{"err": r})
+		z.Panic("unknown", logger.UnsetLayer, logger.Args{"err": r})
 	}
 }
 
-func (z zeroLog) Info(domain string, layer logger.Layer, method string, args logger.Args) {
+func (z zeroLog) Info(domain logger.Domain, layer logger.Layer, args logger.Args) {
+	funcName, _, _ := logger.Caller()
+
 	e := z.logger.Info().
-		Str(logger.DomainJSONKey, domain).
+		Str(logger.DomainJSONKey, string(domain)).
 		Str(logger.LayerJSONKey, layer.String()).
-		Str(logger.MethodJSONKey, method)
+		Str(logger.CallerJSONKey, funcName)
 
 	for k, v := range args {
-		e.Str(k, fmt.Sprintf("%+v", v))
+		if k == logger.LogObjKey {
+			j, _ := json.Marshal(args[k])
+			e.RawJSON(logger.LogObjKey, j)
+		} else {
+			e.Str(k, fmt.Sprintf("%+v", v))
+		}
 	}
 
 	e.Msg("")
 }
 
-func (z zeroLog) Error(domain string, layer logger.Layer, method string, args logger.Args) {
+func (z zeroLog) Error(domain logger.Domain, layer logger.Layer, err error, args logger.Args) {
+	funcName, file, line := logger.Caller()
+
 	e := z.logger.Error().
-		Str(logger.DomainJSONKey, domain).
+		Str(logger.DomainJSONKey, string(domain)).
 		Str(logger.LayerJSONKey, layer.String()).
-		Str(logger.MethodJSONKey, method)
+		Str(logger.FileJSONKey, file).
+		Int(logger.LineJSONKey, line).
+		Str(logger.CallerJSONKey, funcName).
+		Err(err)
 
 	for k, v := range args {
 		e.Str(k, fmt.Sprintf("%+v", v))
@@ -51,13 +64,17 @@ func (z zeroLog) Error(domain string, layer logger.Layer, method string, args lo
 	e.Msg("")
 }
 
-func (z zeroLog) Panic(domain string, layer logger.Layer, method string, args logger.Args) {
+func (z zeroLog) Panic(domain logger.Domain, layer logger.Layer, args logger.Args) {
+	funcName, file, line := logger.Caller()
+
 	e := z.logger.Log().
 		Str(logger.LevelJSONKey, "panic").
-		Str(logger.DomainJSONKey, domain).
+		Str(logger.DomainJSONKey, string(domain)).
 		Str(logger.LayerJSONKey, layer.String()).
-		Str(logger.MethodJSONKey, method).
-		Str(logger.TraceJSONKey, string(debug.Stack()))
+		Str(logger.TraceJSONKey, string(debug.Stack())).
+		Str(logger.FileJSONKey, file).
+		Int(logger.LineJSONKey, line).
+		Str(logger.CallerJSONKey, funcName)
 
 	for k, v := range args {
 		e.Str(k, fmt.Sprintf("%+v", v))

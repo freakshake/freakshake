@@ -7,6 +7,7 @@ import (
 
 	"github.com/mehdieidi/storm/internal/derror"
 	"github.com/mehdieidi/storm/internal/domain"
+	"github.com/mehdieidi/storm/pkg/logger"
 	"github.com/mehdieidi/storm/pkg/type/email"
 	"github.com/mehdieidi/storm/pkg/type/id"
 	"github.com/mehdieidi/storm/pkg/type/offlim"
@@ -77,12 +78,14 @@ var scanUser = func(s xsql.Scanner) (u domain.User, err error) {
 }
 
 type userPostgres struct {
-	db *sql.DB
+	db     *sql.DB
+	logger logger.Logger
 }
 
-func NewUserPostgresStorage(db *sql.DB) domain.UserStorage {
+func NewUserPostgresStorage(db *sql.DB, l logger.Logger) domain.UserStorage {
 	return &userPostgres{
-		db: db,
+		db:     db,
+		logger: l,
 	}
 }
 
@@ -98,6 +101,7 @@ func (s *userPostgres) Store(ctx context.Context, u domain.User) (id.ID[domain.U
 		u.HashedPassword,
 	)
 	if err != nil {
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return 0, err
 	}
 
@@ -110,8 +114,9 @@ func (s *userPostgres) Find(ctx context.Context, uID id.ID[domain.User]) (domain
 	u, err := xsql.QueryOne(ctx, s.db, scanUser, query, uID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			err = derror.ErrUnknownUser
+			return domain.User{}, derror.ErrUnknownUser
 		}
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return domain.User{}, err
 	}
 
@@ -124,8 +129,9 @@ func (s *userPostgres) FindByEmail(ctx context.Context, e email.Email) (domain.U
 	u, err := xsql.QueryOne(ctx, s.db, scanUser, query, e)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			err = derror.ErrUnknownUser
+			return domain.User{}, derror.ErrUnknownUser
 		}
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return domain.User{}, err
 	}
 
@@ -143,8 +149,9 @@ func (s *userPostgres) FindAll(ctx context.Context, o offlim.Offset, l offlim.Li
 	u, err := xsql.QueryMany(ctx, s.db, scanUser, query, o, limit)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			err = derror.ErrUnknownUser
+			return nil, derror.ErrUnknownUser
 		}
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return nil, err
 	}
 
@@ -163,6 +170,7 @@ func (s *userPostgres) Update(ctx context.Context, uID id.ID[domain.User], u dom
 		u.HashedPassword,
 	)
 	if err != nil {
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return err
 	}
 
@@ -172,6 +180,7 @@ func (s *userPostgres) Update(ctx context.Context, uID id.ID[domain.User], u dom
 func (s *userPostgres) Delete(ctx context.Context, uID id.ID[domain.User]) error {
 	_, err := s.db.ExecContext(ctx, deleteQuery, uID)
 	if err != nil {
+		s.logger.Error(domain.UserDomain, logger.StorageLayer, err, logger.Args{})
 		return err
 	}
 	return nil
