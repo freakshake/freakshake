@@ -26,10 +26,10 @@ import (
 	httpserver "github.com/mehdieidi/storm/transport/server/http"
 )
 
-//	@title		Storm Backend Service
-//	@BasePath	/api
+// @title		freakshake Backend Service
+// @BasePath	/api
 func main() {
-	cfg, err := config.Read()
+	cfg, err := config.Load()
 	xerror.PanicIf(err)
 
 	postgresDB, err := postgres.Open(postgres.DSN{

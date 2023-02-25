@@ -58,9 +58,9 @@ type Config struct {
 	Log        `mapstructure:"log"`
 }
 
-func Read() (Config, error) {
+func Load() (Config, error) {
 	viper.AutomaticEnv()
-	viper.SetEnvPrefix("MEDAD")
+	viper.SetEnvPrefix("FREAK")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
 	viper.SetConfigName("config")
