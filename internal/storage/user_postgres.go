@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/mehdieidi/freakshake/internal/derror"
-	"github.com/mehdieidi/freakshake/internal/domain"
-	"github.com/mehdieidi/freakshake/pkg/logger"
-	"github.com/mehdieidi/freakshake/pkg/type/email"
-	"github.com/mehdieidi/freakshake/pkg/type/id"
-	"github.com/mehdieidi/freakshake/pkg/type/offlim"
-	"github.com/mehdieidi/freakshake/pkg/xsql"
+	"github.com/freakshake/internal/derror"
+	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/pkg/logger"
+	"github.com/freakshake/pkg/type/email"
+	"github.com/freakshake/pkg/type/id"
+	"github.com/freakshake/pkg/type/offlim"
+	"github.com/freakshake/pkg/xsql"
 )
 
 const insertQuery = `

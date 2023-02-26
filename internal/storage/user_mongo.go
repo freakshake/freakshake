@@ -3,10 +3,10 @@ package storage
 import (
 	"context"
 
-	"github.com/mehdieidi/freakshake/internal/domain"
-	"github.com/mehdieidi/freakshake/pkg/type/email"
-	"github.com/mehdieidi/freakshake/pkg/type/id"
-	"github.com/mehdieidi/freakshake/pkg/type/offlim"
+	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/pkg/type/email"
+	"github.com/freakshake/pkg/type/id"
+	"github.com/freakshake/pkg/type/offlim"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

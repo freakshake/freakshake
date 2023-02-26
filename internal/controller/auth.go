@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"github.com/freakshake/internal/domain"
 	"github.com/labstack/echo/v4"
-	"github.com/mehdieidi/freakshake/internal/domain"
 )
 
 type auth struct {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/mehdieidi/freakshake/pkg/logger"
+	"github.com/freakshake/pkg/logger"
 )
 
 type zeroLog struct {

@@ -1,8 +1,9 @@
-module github.com/mehdieidi/freakshake
+module github.com/freakshake
 
 go 1.19
 
 require (
+	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang-migrate/migrate/v4 v4.15.2

@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
+	"github.com/freakshake/pkg/cache"
 	"github.com/go-redis/redis/v8"
-	"github.com/mehdieidi/freakshake/pkg/cache"
 )
 
 type redisCache struct {

@@ -10,20 +10,20 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/freakshake/xerror"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	_ "github.com/mehdieidi/freakshake/api/swagger"
-	"github.com/mehdieidi/freakshake/config"
-	"github.com/mehdieidi/freakshake/internal/controller"
-	"github.com/mehdieidi/freakshake/internal/service"
-	"github.com/mehdieidi/freakshake/internal/storage"
-	"github.com/mehdieidi/freakshake/pkg/cache/redis"
-	"github.com/mehdieidi/freakshake/pkg/logger/zerolog"
-	"github.com/mehdieidi/freakshake/pkg/mongo"
-	"github.com/mehdieidi/freakshake/pkg/postgres"
-	"github.com/mehdieidi/freakshake/pkg/xerror"
-	httpserver "github.com/mehdieidi/freakshake/transport/server/http"
+	_ "github.com/freakshake/api/swagger"
+	"github.com/freakshake/config"
+	"github.com/freakshake/internal/controller"
+	"github.com/freakshake/internal/service"
+	"github.com/freakshake/internal/storage"
+	"github.com/freakshake/pkg/cache/redis"
+	"github.com/freakshake/pkg/logger/zerolog"
+	"github.com/freakshake/pkg/mongo"
+	"github.com/freakshake/pkg/postgres"
+	httpserver "github.com/freakshake/transport/server/http"
 )
 
 //	@title		freakshake Backend Service

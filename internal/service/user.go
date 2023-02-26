@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 
-	"github.com/mehdieidi/freakshake/internal/domain"
-	"github.com/mehdieidi/freakshake/pkg/cache"
-	"github.com/mehdieidi/freakshake/pkg/pick"
-	"github.com/mehdieidi/freakshake/pkg/type/email"
-	"github.com/mehdieidi/freakshake/pkg/type/id"
-	"github.com/mehdieidi/freakshake/pkg/type/offlim"
+	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/pkg/cache"
+	"github.com/freakshake/pkg/pick"
+	"github.com/freakshake/pkg/type/email"
+	"github.com/freakshake/pkg/type/id"
+	"github.com/freakshake/pkg/type/offlim"
 )
 
 type user struct {
