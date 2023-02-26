@@ -3,8 +3,8 @@ package domain
 import (
 	"context"
 
-	"github.com/freakshake/pkg/type/email"
-	"github.com/freakshake/pkg/type/password"
+	"github.com/freakshake/type/email"
+	"github.com/freakshake/type/password"
 )
 
 type AuthToken string

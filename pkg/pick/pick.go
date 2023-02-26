@@ -1,6 +1,6 @@
 package pick
 
-import "github.com/freakshake/pkg/type/optional"
+import "github.com/freakshake/type/optional"
 
 func IfChanged[T comparable](oldData, newData T) (empty T) {
 	if newData != empty {

@@ -3,11 +3,12 @@ package storage
 import (
 	"context"
 
-	"github.com/freakshake/internal/domain"
-	"github.com/freakshake/pkg/type/email"
-	"github.com/freakshake/pkg/type/id"
-	"github.com/freakshake/pkg/type/offlim"
+	"github.com/freakshake/type/email"
+	"github.com/freakshake/type/id"
+	"github.com/freakshake/type/offlim"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	"github.com/freakshake/internal/domain"
 )
 
 type userMongo struct {

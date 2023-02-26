@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/freakshake/pkg/type/email"
-	"github.com/freakshake/pkg/type/file"
-	"github.com/freakshake/pkg/type/id"
-	"github.com/freakshake/pkg/type/mobile"
-	"github.com/freakshake/pkg/type/offlim"
-	"github.com/freakshake/pkg/type/optional"
-	"github.com/freakshake/pkg/type/password"
+	"github.com/freakshake/type/email"
+	"github.com/freakshake/type/file"
+	"github.com/freakshake/type/id"
+	"github.com/freakshake/type/mobile"
+	"github.com/freakshake/type/offlim"
+	"github.com/freakshake/type/optional"
+	"github.com/freakshake/type/password"
 )
 
 const UserDomain = "user"

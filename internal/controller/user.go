@@ -3,18 +3,18 @@ package controller
 import (
 	"strconv"
 
+	"github.com/freakshake/type/email"
+	"github.com/freakshake/type/file"
+	"github.com/freakshake/type/id"
+	"github.com/freakshake/type/mobile"
+	"github.com/freakshake/type/offlim"
+	"github.com/freakshake/type/optional"
+	"github.com/freakshake/type/password"
 	"github.com/labstack/echo/v4"
 
 	"github.com/freakshake/internal/derror"
 	"github.com/freakshake/internal/domain"
 	"github.com/freakshake/pkg/logger"
-	"github.com/freakshake/pkg/type/email"
-	"github.com/freakshake/pkg/type/file"
-	"github.com/freakshake/pkg/type/id"
-	"github.com/freakshake/pkg/type/mobile"
-	"github.com/freakshake/pkg/type/offlim"
-	"github.com/freakshake/pkg/type/optional"
-	"github.com/freakshake/pkg/type/password"
 )
 
 type user struct {
