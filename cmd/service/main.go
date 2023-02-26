@@ -41,6 +41,7 @@ func main() {
 		DB:       cfg.Postgres.DB,
 	})
 	xerror.PanicIf(err)
+	xerror.PanicIf(postgres.Ping(postgresDB))
 	defer postgresDB.Close()
 
 	cache := redis.New(
@@ -48,6 +49,7 @@ func main() {
 		cfg.Redis.Port,
 		redis.WithCredential(cfg.Redis.User, cfg.Redis.Password),
 	)
+	xerror.PanicIf(cache.Ping())
 
 	mongoClient, err := mongo.NewClient(mongo.ConnectionString{
 		Host:     cfg.Mongo.Host,

@@ -3,11 +3,11 @@ module github.com/freakshake
 go 1.19
 
 require (
-	github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914
+	github.com/freakshake/cache v0.0.0-20230226221856-2da0b503e1e3
 	github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf
 	github.com/freakshake/mongo v0.0.0-20230226200246-d5d88fe8d8dc
 	github.com/freakshake/pick v0.0.0-20230226201414-73570b8684d5
-	github.com/freakshake/postgres v0.0.0-20230226191513-1dc5c3994a84
+	github.com/freakshake/postgres v0.0.0-20230226203345-cf39cca84bb4
 	github.com/freakshake/type v0.0.0-20230226175112-41af0e963328
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779

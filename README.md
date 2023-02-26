@@ -66,6 +66,13 @@ $ make fmt
 
 The /config package is used for configuration management. Refer to the README.md file in /config for more detail.
 
+## Database
+
+For each database e.g. postgres, mongo,... we should implement a constructor package like <https://github.com/freakshake/postgres>
+or <https://github.com/freakshake/mongo> in the /pkg directory. We should implement a struct for a DSN or connection string or something like this.
+
+We should ping the DB if possible for a quick health check.
+
 ## Errors
 
 ### Panics
