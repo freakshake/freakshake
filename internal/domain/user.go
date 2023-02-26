@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/mehdieidi/storm/pkg/type/email"
-	"github.com/mehdieidi/storm/pkg/type/file"
-	"github.com/mehdieidi/storm/pkg/type/id"
-	"github.com/mehdieidi/storm/pkg/type/mobile"
-	"github.com/mehdieidi/storm/pkg/type/offlim"
-	"github.com/mehdieidi/storm/pkg/type/optional"
-	"github.com/mehdieidi/storm/pkg/type/password"
+	"github.com/mehdieidi/freakshake/pkg/type/email"
+	"github.com/mehdieidi/freakshake/pkg/type/file"
+	"github.com/mehdieidi/freakshake/pkg/type/id"
+	"github.com/mehdieidi/freakshake/pkg/type/mobile"
+	"github.com/mehdieidi/freakshake/pkg/type/offlim"
+	"github.com/mehdieidi/freakshake/pkg/type/optional"
+	"github.com/mehdieidi/freakshake/pkg/type/password"
 )
 
 const UserDomain = "user"

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mehdieidi/storm/pkg/type/optional"
+	"github.com/mehdieidi/freakshake/pkg/type/optional"
 )
 
 type ID string

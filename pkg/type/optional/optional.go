@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	_ "unsafe"
 
-	"github.com/mehdieidi/storm/pkg/xerror"
+	"github.com/mehdieidi/freakshake/pkg/xerror"
 )
 
 type Optional[T any] struct {

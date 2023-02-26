@@ -1,6 +1,6 @@
 package pick
 
-import "github.com/mehdieidi/storm/pkg/type/optional"
+import "github.com/mehdieidi/freakshake/pkg/type/optional"
 
 func IfChanged[T comparable](oldData, newData T) (empty T) {
 	if newData != empty {

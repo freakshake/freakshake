@@ -13,17 +13,17 @@ import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	_ "github.com/mehdieidi/storm/api/swagger"
-	"github.com/mehdieidi/storm/config"
-	"github.com/mehdieidi/storm/internal/controller"
-	"github.com/mehdieidi/storm/internal/service"
-	"github.com/mehdieidi/storm/internal/storage"
-	"github.com/mehdieidi/storm/pkg/cache/redis"
-	"github.com/mehdieidi/storm/pkg/logger/zerolog"
-	"github.com/mehdieidi/storm/pkg/mongo"
-	"github.com/mehdieidi/storm/pkg/postgres"
-	"github.com/mehdieidi/storm/pkg/xerror"
-	httpserver "github.com/mehdieidi/storm/transport/server/http"
+	_ "github.com/mehdieidi/freakshake/api/swagger"
+	"github.com/mehdieidi/freakshake/config"
+	"github.com/mehdieidi/freakshake/internal/controller"
+	"github.com/mehdieidi/freakshake/internal/service"
+	"github.com/mehdieidi/freakshake/internal/storage"
+	"github.com/mehdieidi/freakshake/pkg/cache/redis"
+	"github.com/mehdieidi/freakshake/pkg/logger/zerolog"
+	"github.com/mehdieidi/freakshake/pkg/mongo"
+	"github.com/mehdieidi/freakshake/pkg/postgres"
+	"github.com/mehdieidi/freakshake/pkg/xerror"
+	httpserver "github.com/mehdieidi/freakshake/transport/server/http"
 )
 
 // @title		freakshake Backend Service

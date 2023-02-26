@@ -7,8 +7,8 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 
-	"github.com/mehdieidi/storm/internal/derror"
-	"github.com/mehdieidi/storm/internal/domain"
+	"github.com/mehdieidi/freakshake/internal/derror"
+	"github.com/mehdieidi/freakshake/internal/domain"
 )
 
 type auth struct {
