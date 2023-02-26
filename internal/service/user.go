@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/freakshake/cache"
+	"github.com/freakshake/pick"
 	"github.com/freakshake/type/email"
 	"github.com/freakshake/type/id"
 	"github.com/freakshake/type/offlim"
 
 	"github.com/freakshake/internal/domain"
-	"github.com/freakshake/pkg/pick"
 )
 
 type user struct {

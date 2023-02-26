@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 
+	"github.com/freakshake/logger"
 	"github.com/freakshake/type/email"
 	"github.com/freakshake/type/id"
 	"github.com/freakshake/type/offlim"
@@ -12,12 +13,14 @@ import (
 )
 
 type userMongo struct {
-	c *mongo.Client
+	c      *mongo.Client
+	logger logger.Logger
 }
 
-func NewUserMongoStorage(c *mongo.Client) domain.UserStorage {
+func NewUserMongoStorage(c *mongo.Client, logger logger.Logger) domain.UserStorage {
 	return &userMongo{
-		c: c,
+		c:      c,
+		logger: logger,
 	}
 }
 

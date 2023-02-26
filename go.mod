@@ -5,8 +5,10 @@ go 1.19
 require (
 	github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914
 	github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf
+	github.com/freakshake/mongo v0.0.0-20230226200246-d5d88fe8d8dc
+	github.com/freakshake/pick v0.0.0-20230226201414-73570b8684d5
 	github.com/freakshake/postgres v0.0.0-20230226191513-1dc5c3994a84
-	github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94
+	github.com/freakshake/type v0.0.0-20230226175112-41af0e963328
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779
 	github.com/golang-jwt/jwt/v4 v4.4.3
@@ -14,7 +16,7 @@ require (
 	github.com/spf13/viper v1.15.0
 	github.com/swaggo/echo-swagger v1.3.5
 	github.com/swaggo/swag v1.8.10
-	go.mongodb.org/mongo-driver v1.7.0
+	go.mongodb.org/mongo-driver v1.11.2
 )
 
 require (
@@ -29,7 +31,6 @@ require (
 	github.com/go-openapi/spec v0.20.4 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
-	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang-migrate/migrate/v4 v4.15.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -45,6 +46,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/zerolog v1.29.0 // indirect
@@ -57,8 +59,8 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
-	github.com/xdg-go/scram v1.0.2 // indirect
-	github.com/xdg-go/stringprep v1.0.2 // indirect
+	github.com/xdg-go/scram v1.1.1 // indirect
+	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/crypto v0.6.0 // indirect

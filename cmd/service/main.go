@@ -12,6 +12,7 @@ import (
 
 	"github.com/freakshake/cache/redis"
 	"github.com/freakshake/logger/zerolog"
+	"github.com/freakshake/mongo"
 	"github.com/freakshake/postgres"
 	"github.com/freakshake/xerror"
 	"github.com/labstack/echo/v4"
@@ -22,7 +23,6 @@ import (
 	"github.com/freakshake/internal/controller"
 	"github.com/freakshake/internal/service"
 	"github.com/freakshake/internal/storage"
-	"github.com/freakshake/pkg/mongo"
 	httpserver "github.com/freakshake/transport/server/http"
 )
 
@@ -71,7 +71,7 @@ func main() {
 
 	// Storage (repository) layer.
 	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB, logger)
-	userMongoStorage := storage.NewUserMongoStorage(mongoClient)
+	userMongoStorage := storage.NewUserMongoStorage(mongoClient, logger)
 
 	// Service (usecase) layer.
 	userService := service.NewUserService(userPostgresStorage, userMongoStorage, cache)
