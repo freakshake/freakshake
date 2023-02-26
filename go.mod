@@ -3,10 +3,10 @@ module github.com/freakshake
 go 1.19
 
 require (
+	github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914
 	github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779
-	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/labstack/echo/v4 v4.10.0
@@ -29,6 +29,7 @@ require (
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
+	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect

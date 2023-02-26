@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/freakshake/cache/redis"
 	"github.com/freakshake/xerror"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -19,7 +20,6 @@ import (
 	"github.com/freakshake/internal/controller"
 	"github.com/freakshake/internal/service"
 	"github.com/freakshake/internal/storage"
-	"github.com/freakshake/pkg/cache/redis"
 	"github.com/freakshake/pkg/logger/zerolog"
 	"github.com/freakshake/pkg/mongo"
 	"github.com/freakshake/pkg/postgres"
@@ -32,6 +32,7 @@ func main() {
 	cfg, err := config.Load()
 	xerror.PanicIf(err)
 
+	// Make peripheral connections. e.g. DB, cache, ...
 	postgresDB, err := postgres.Open(postgres.DSN{
 		Host:     cfg.Postgres.Host,
 		Port:     cfg.Postgres.Port,
@@ -42,9 +43,11 @@ func main() {
 	xerror.PanicIf(err)
 	defer postgresDB.Close()
 
-	xerror.PanicIf(postgres.MigrateUp(postgresDB, cfg.Postgres.MigrationsPath))
-
-	cache := redis.New(cfg.Redis.Host, cfg.Redis.Port, redis.WithCredential(cfg.Redis.User, cfg.Redis.Password))
+	cache := redis.New(
+		cfg.Redis.Host,
+		cfg.Redis.Port,
+		redis.WithCredential(cfg.Redis.User, cfg.Redis.Password),
+	)
 
 	mongoClient, err := mongo.NewClient(mongo.ConnectionString{
 		Host:     cfg.Mongo.Host,
@@ -60,6 +63,9 @@ func main() {
 	logFile, err := os.OpenFile(cfg.Log.FileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	xerror.PanicIf(err)
 	defer logFile.Close()
+
+	// Auto migrate up.
+	xerror.PanicIf(postgres.MigrateUp(postgresDB, cfg.Postgres.MigrationsPath))
 
 	logger := zerolog.New(logFile)
 
