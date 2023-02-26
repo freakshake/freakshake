@@ -26,8 +26,8 @@ import (
 	httpserver "github.com/mehdieidi/freakshake/transport/server/http"
 )
 
-// @title		freakshake Backend Service
-// @BasePath	/api
+//	@title		freakshake Backend Service
+//	@BasePath	/api
 func main() {
 	cfg, err := config.Load()
 	xerror.PanicIf(err)

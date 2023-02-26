@@ -16,16 +16,16 @@ func AuthRoutes(g *echo.Group, authService domain.AuthService) {
 	g.POST("/auth/register", a.RegisterHandler)
 }
 
-// @Summary		login user
-// @Description	login user.
-// @Tags			Auth
-// @Accept			json
-// @Produce		json
-// @Param			login	body		domain.LoginDTO	true	"login"
-// @Success		200		{object}	domain.AuthToken
-// @Failure		400		{object}	map[string]string{error=string}	"Invalid request"
-// @Failure		500		{object}	map[string]string{error=string}	"Internal server error"
-// @Router			/auth/login [post]
+//	@Summary		login user
+//	@Description	login user.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			login	body		domain.LoginDTO	true	"login"
+//	@Success		200		{object}	domain.AuthToken
+//	@Failure		400		{object}	map[string]string{error=string}	"Invalid request"
+//	@Failure		500		{object}	map[string]string{error=string}	"Internal server error"
+//	@Router			/auth/login [post]
 func (a auth) LoginHandler(c echo.Context) error {
 	var req domain.LoginDTO
 	if err := c.Bind(&req); err != nil {
@@ -42,16 +42,16 @@ func (a auth) LoginHandler(c echo.Context) error {
 	return c.JSON(200, token)
 }
 
-// @Summary		register a user
-// @Description	register a user.
-// @Tags			Auth
-// @Accept			json
-// @Produce		json
-// @Param			register	body		domain.RegisterDTO	true	"register"
-// @Success		200			{object}	domain.User
-// @Failure		400			{object}	map[string]string{error=string}	"Invalid request"
-// @Failure		500			{object}	map[string]string{error=string}	"Internal server error"
-// @Router			/auth/register [post]
+//	@Summary		register a user
+//	@Description	register a user.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			register	body		domain.RegisterDTO	true	"register"
+//	@Success		200			{object}	domain.User
+//	@Failure		400			{object}	map[string]string{error=string}	"Invalid request"
+//	@Failure		500			{object}	map[string]string{error=string}	"Internal server error"
+//	@Router			/auth/register [post]
 func (a auth) RegisterHandler(c echo.Context) error {
 	var req domain.RegisterDTO
 	if err := c.Bind(&req); err != nil {
