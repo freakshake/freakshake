@@ -4,13 +4,13 @@ go 1.19
 
 require (
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
+	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.10.0
 	github.com/lib/pq v1.10.7
-	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.15.0
 	github.com/spf13/viper v1.15.0
 	github.com/swaggo/echo-swagger v1.3.5
@@ -44,6 +44,7 @@ require (
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

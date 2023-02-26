@@ -411,6 +411,8 @@ github.com/frankban/quicktest v1.11.3/go.mod h1:wRf/ReqHper53s+kmmSZizM8NamnL3IM
 github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3ZUKE=
 github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678 h1:BKhz+B/ylEQqLdjPV5gvaXU6K5aoGL3l+xT+NB71+qg=
 github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678/go.mod h1:fhhTEaLzcFytW9Xzl40hJxUoc8DQnQeyCN9MWlQgwzU=
+github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779 h1:4hXD4RxQaaP2Tiq8PiCJCKFTlfZ9U0ozGmNTxw7N/B0=
+github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779/go.mod h1:hGh9Z63BRA+097fO1P1uRJZ+XyWLSoJ5okxsJQ6eUlU=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/fsnotify/fsnotify v1.6.0 h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=

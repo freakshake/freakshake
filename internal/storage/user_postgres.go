@@ -11,7 +11,7 @@ import (
 	"github.com/freakshake/pkg/type/email"
 	"github.com/freakshake/pkg/type/id"
 	"github.com/freakshake/pkg/type/offlim"
-	"github.com/freakshake/pkg/xsql"
+	"github.com/freakshake/xsql"
 )
 
 const insertQuery = `
