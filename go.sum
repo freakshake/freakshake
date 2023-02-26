@@ -414,6 +414,8 @@ github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914 h1:GsKZf6CrAVGTK1
 github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914/go.mod h1:jjwHFL0MxUZ74IJ/t0mq689F/Ejsq4I9JmzKGl7cTcM=
 github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf h1:nwKzGL0gGawlgosyD5rXdD75+EaVO+gAIFZ6LjxXVlQ=
 github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf/go.mod h1:iPdkLUIwXuEaB8JxAem8qNfZSTRE5HQtyy+UIL4ERaU=
+github.com/freakshake/postgres v0.0.0-20230226191513-1dc5c3994a84 h1:uZBI5xdBzDiTbV1TWIg+HB4sZA7ATfmRgbPthc0Waac=
+github.com/freakshake/postgres v0.0.0-20230226191513-1dc5c3994a84/go.mod h1:rYSsThHmXFzD9/WPSqCI9lU4ZNutAeAfGZZ7U6xTWWg=
 github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94 h1:LntwUy8hI6Pw13HRPDYDDlRM11Vf0aqoF6LiwwQR50w=
 github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94/go.mod h1:pnNycf8v/O7+UPzxWNax9zn4GpwmRTKI9nJ7Rt7N8Z8=
 github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678 h1:BKhz+B/ylEQqLdjPV5gvaXU6K5aoGL3l+xT+NB71+qg=

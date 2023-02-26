@@ -5,13 +5,12 @@ go 1.19
 require (
 	github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914
 	github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf
+	github.com/freakshake/postgres v0.0.0-20230226191513-1dc5c3994a84
 	github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779
 	github.com/golang-jwt/jwt/v4 v4.4.3
-	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/labstack/echo/v4 v4.10.0
-	github.com/lib/pq v1.10.7
 	github.com/spf13/viper v1.15.0
 	github.com/swaggo/echo-swagger v1.3.5
 	github.com/swaggo/swag v1.8.10
@@ -31,6 +30,7 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
+	github.com/golang-migrate/migrate/v4 v4.15.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -39,6 +39,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
+	github.com/lib/pq v1.10.7 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
