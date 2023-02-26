@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/freakshake/logger"
 	"github.com/freakshake/type/email"
 	"github.com/freakshake/type/id"
 	"github.com/freakshake/type/offlim"
@@ -12,7 +13,6 @@ import (
 
 	"github.com/freakshake/internal/derror"
 	"github.com/freakshake/internal/domain"
-	"github.com/freakshake/pkg/logger"
 )
 
 const insertQuery = `

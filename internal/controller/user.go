@@ -3,6 +3,7 @@ package controller
 import (
 	"strconv"
 
+	"github.com/freakshake/logger"
 	"github.com/freakshake/type/email"
 	"github.com/freakshake/type/file"
 	"github.com/freakshake/type/id"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/freakshake/internal/derror"
 	"github.com/freakshake/internal/domain"
-	"github.com/freakshake/pkg/logger"
 )
 
 type user struct {

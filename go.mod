@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/freakshake/cache v0.0.0-20230226184847-bcf62c6f7914
+	github.com/freakshake/logger v0.0.0-20230226190930-a6e545a4eabf
 	github.com/freakshake/type v0.0.0-20230226173757-65bb2fb87a94
 	github.com/freakshake/xerror v0.0.0-20230226154156-877dae998678
 	github.com/freakshake/xsql v0.0.0-20230226165856-f459ee3e4779
@@ -11,7 +12,6 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/labstack/echo/v4 v4.10.0
 	github.com/lib/pq v1.10.7
-	github.com/rs/zerolog v1.15.0
 	github.com/spf13/viper v1.15.0
 	github.com/swaggo/echo-swagger v1.3.5
 	github.com/swaggo/swag v1.8.10
@@ -46,6 +46,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rs/zerolog v1.29.0 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

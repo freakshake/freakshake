@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/freakshake/cache/redis"
+	"github.com/freakshake/logger/zerolog"
 	"github.com/freakshake/xerror"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -20,7 +21,6 @@ import (
 	"github.com/freakshake/internal/controller"
 	"github.com/freakshake/internal/service"
 	"github.com/freakshake/internal/storage"
-	"github.com/freakshake/pkg/logger/zerolog"
 	"github.com/freakshake/pkg/mongo"
 	"github.com/freakshake/pkg/postgres"
 	httpserver "github.com/freakshake/transport/server/http"
