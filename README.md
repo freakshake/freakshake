@@ -1,10 +1,14 @@
 # freakshake
 
-freakshake is a guide and a demonstrative Go backend project. Attempting to structure the project in a way that complies with the SOLID principles and other software engineering best practices.
+freakshake is an opinionated guide and a demonstrative Go backend project. Attempting to structure the project in a way that complies with the SOLID principles, layered and clean architecture, and other software engineering best practices.
 
 ## Import Declarations
 
-Import declarations order: 1. stdlib 2. 3rd party 3. local
+Order:
+
+* stdlib
+* 3rd party
+* local
 
 ```go
 import (
@@ -12,7 +16,7 @@ import (
 
     "github.com/labstack/echo/v4"
 
-    "github.com/freakshake/xsql
+    "github.com/freakshake/freakshake/xsql"
 )
 ```
 
@@ -83,13 +87,35 @@ log transport protocols.
 Logging convention we use is logging all the errors in the storage layer and controller layer when binding request, validating, and calling the service layer.
 Only log the ID of the entity being requested and processed as an information log in the corresponding controller. We do not log the entire object.
 
-Examples of logs:
+Examples log output:
 
 ```log
 {"level":"error","domain":"user","layer":"TRANSPORT","file":"/home/user/freakshake/internal/controller/user.go","line":76,"caller":"github.com/freakshake/internal/controller.user.createHandler","err":"code=400, message=Syntax error: offset=50, error=invalid character 's' after object key:value pair,"time":1677231468}
 ```
 
+## Developing New Requirements
+
+Now if you need to develop a new feature (after designing process):
+
+* Create the domain model and interfaces in /internal/domain/
+* Implement new domain's storage interface in the /internal/storage/ this should meet the storage needs of the domain
+* Implement new domain's service interface in the /internal/service/ this should meet the business logic needs of the domain
+* You should implement related defined errors along the way you develop the new feature in /internal/derror/ and add the new errors to the errStatusMap
+* Implement handlers and http routes function in /internal/controller/ and call the function in the /cmd/service/main.go
+* Add comments on top of the handlers for auto swagger doc generation
+* Run $ make pipeline to start the service.
+* Test endpoints
+* Check swagger docs
+
 ## Errors
+
+With no surprise errors are handled in the Go way!
+
+```Go
+if err != nil {
+    return err
+}
+```
 
 ### Panics
 
@@ -98,3 +124,12 @@ In the main.go files we prefer to panic when we encounter an error. You can use 
 ```go
 xerror.PanicIf(err)
 ```
+
+## When to consider abstraction?
+
+In our opinion you should avoid abstraction-trap. Sure dependency inversion is cool, hiding detail is good, ... but we should consider that not always we need to abstract things using interface and stuff.
+
+* For example when you are dealing with a cache, I mean the basic put, get, ... functionalities of a cache, there is a great chance where you are going to use this cache all over your project and if the cache tool you have used doesn't meet your requirements in the future, for let's say, performance reasons, you need to change code all over your project to replace the cache.
+But if you have defined an interface and implemented that interface using a cache tool, the only place you needed to change was the implementation. Not all the places where the cache is used.
+
+* But consider the case where you need to implement a token-based authentication feature having login and register endpoints. Now in the business logic layer you need to verify user credentials and create a token for the user. Thats where you probably are going to use something like JWT. So you need a JWT library to construct tokens. Now you DONT need to define abstractions and interfaces and make things more complex than it supposed to be. Because the only place you are using that lib is a well-known layer called business logic layer and its only ONE place. If you wanted to replace JWT with an other mechanism, say PASETO, you only need to change one implementation in only one layer!

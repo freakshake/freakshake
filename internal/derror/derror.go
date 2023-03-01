@@ -30,7 +30,7 @@ var (
 	ErrUserExists      = errors.New("user already exists")
 )
 
-var errHTTPStatusMap = map[error]int{
+var errStatusMap = map[error]int{
 	// Status internal server error.
 	ErrInternal: http.StatusInternalServerError,
 

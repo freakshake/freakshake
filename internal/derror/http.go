@@ -12,7 +12,7 @@ type errorResponse struct {
 func EncodeHTTPError(w http.ResponseWriter, err error) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
-	status, ok := errHTTPStatusMap[err]
+	status, ok := errStatusMap[err]
 	if !ok {
 		status = http.StatusInternalServerError
 	}

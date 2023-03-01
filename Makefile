@@ -1,10 +1,11 @@
 MIGRATIONS_PATH=./migrations/
 
 POSTGRES_DB_NAME=test_db
+POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=1234
-POSTGRES_DB_URL=postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:$(POSTGRES_PORT)/$(DB_NAME)?sslmode=disable
+POSTGRES_DB_URL=postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(DB_NAME)?sslmode=disable
 
 POSTGRES_CONTAINER=postgres_test
 REDIS_CONTAINER=redis_test
@@ -22,10 +23,10 @@ lint:
 swagger:
 	swag init --dir ./cmd/service/ --output ./api/swagger --parseDependency 
 
-build-http:
+build-service:
 	go build -o freakshake ./cmd/service/
 
-run-http:
+run-service:
 	./freakshake
 
 postgres-container:
@@ -43,10 +44,10 @@ stop-containers:
 	docker stop $(REDIS_CONTAINER)
 
 create-postgres-db:
-	docker exec -it $(POSTGRES_CONTAINER) createdb --username=postgres --owner=postgres $(POSTGRES_DB_NAME)
+	docker exec -it $(POSTGRES_CONTAINER) createdb --username=$(POSTGRES_USER) --owner=postgres $(POSTGRES_DB_NAME)
 
 drop-postgres-db:
-	docker exec -it $(POSTGRES_CONTAINER) dropdb --username=postgres $(POSTGRES_DB_NAME)
+	docker exec -it $(POSTGRES_CONTAINER) dropdb --username=$(POSTGRES_USER) $(POSTGRES_DB_NAME)
 
 migrateup:
 	migrate -path "$(MIGRATIONS_PATH)" -database "$(POSTGRES_DB_URL)" -verbose up
@@ -66,4 +67,4 @@ create-migration:
 fix-migrate:
 	migrate -database "$(POSTGRES_DB_URL)" -path "$(MIGRATIONS_PATH)" force $(VERSION)
 
-pipeline: tidy swagger fmt build-http run-http
+pipeline: tidy swagger fmt build-service run-service
