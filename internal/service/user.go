@@ -9,7 +9,7 @@ import (
 	"github.com/freakshake/type/id"
 	"github.com/freakshake/type/offlim"
 
-	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/freakshake/internal/domain"
 )
 
 type user struct {

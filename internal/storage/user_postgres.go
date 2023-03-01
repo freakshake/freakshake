@@ -11,8 +11,8 @@ import (
 	"github.com/freakshake/type/offlim"
 	"github.com/freakshake/xsql"
 
-	"github.com/freakshake/internal/derror"
-	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/freakshake/internal/derror"
+	"github.com/freakshake/freakshake/internal/domain"
 )
 
 const insertQuery = `

@@ -7,6 +7,8 @@ import (
 	"github.com/freakshake/type/password"
 )
 
+const AuthDomain = "auth"
+
 type AuthToken string
 
 type LoginDTO struct {

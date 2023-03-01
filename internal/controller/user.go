@@ -13,8 +13,9 @@ import (
 	"github.com/freakshake/type/password"
 	"github.com/labstack/echo/v4"
 
-	"github.com/freakshake/internal/derror"
-	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/freakshake/internal/derror"
+	"github.com/freakshake/freakshake/internal/domain"
+	"github.com/freakshake/freakshake/pkg/response"
 )
 
 type user struct {
@@ -70,16 +71,16 @@ func (c createUserRequest) validate() error {
 //	@Failure		400		{object}	map[string]string{error=string}	"Invalid request"
 //	@Failure		500		{object}	map[string]string{error=string}	"Internal server error"
 //	@Router			/users [post]
-func (u user) createHandler(c echo.Context) (err error) {
+func (u user) createHandler(c echo.Context) error {
 	var req createUserRequest
 	if err := c.Bind(&req); err != nil {
 		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
-		return c.String(500, err.Error())
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	if err := req.validate(); err != nil {
 		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
-		return c.String(500, err.Error())
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	user := domain.User{
@@ -91,15 +92,15 @@ func (u user) createHandler(c echo.Context) (err error) {
 		Password:     req.Password,
 	}
 
-	user, err = u.userService.Create(c.Request().Context(), user)
+	user, err := u.userService.Create(c.Request().Context(), user)
 	if err != nil {
 		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
-		return c.String(500, err.Error())
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"id": user.ID})
 
-	return c.JSON(200, user)
+	return response.EncodeHTTP(c.Response(), user)
 }
 
 //	@Summary		get user by id
@@ -115,15 +116,19 @@ func (u user) createHandler(c echo.Context) (err error) {
 func (u user) getHandler(c echo.Context) error {
 	uID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.String(500, err.Error())
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	user, err := u.userService.Get(c.Request().Context(), id.ID[domain.User](uID))
 	if err != nil {
-		return c.String(500, err.Error())
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
-	return c.JSON(200, user)
+	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"id": uID})
+
+	return response.EncodeHTTP(c.Response(), user)
 }
 
 type listUsersRequest struct {
@@ -144,16 +149,19 @@ type listUsersRequest struct {
 func (u user) listHandler(c echo.Context) error {
 	var req listUsersRequest
 	if err := c.Bind(&req); err != nil {
-		c.String(500, err.Error())
-		return err
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	users, err := u.userService.List(c.Request().Context(), req.Offset, req.Limit)
 	if err != nil {
-		return c.String(500, err.Error())
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
-	return c.JSON(200, users)
+	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"offset": req.Offset, "limit": req.Limit})
+
+	return response.EncodeHTTP(c.Response(), users)
 }
 
 type updateUserRequest struct {
@@ -179,8 +187,8 @@ type updateUserRequest struct {
 func (u user) updateHandler(c echo.Context) error {
 	var req updateUserRequest
 	if err := c.Bind(&req); err != nil {
-		c.String(500, err.Error())
-		return err
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	user := domain.User{
@@ -192,11 +200,13 @@ func (u user) updateHandler(c echo.Context) error {
 	}
 
 	if err := u.userService.Update(c.Request().Context(), req.ID, user); err != nil {
-		c.String(500, err.Error())
-		return err
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
-	return c.JSON(200, true)
+	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"id": req.ID})
+
+	return response.EncodeHTTP(c.Response(), true)
 }
 
 //	@Summary		delete user
@@ -212,14 +222,16 @@ func (u user) updateHandler(c echo.Context) error {
 func (u user) deleteHandler(c echo.Context) error {
 	uID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.String(500, err.Error())
-		return err
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
 	if err := u.userService.Delete(c.Request().Context(), id.ID[domain.User](uID)); err != nil {
-		c.String(500, err.Error())
-		return err
+		u.logger.Error(domain.UserDomain, logger.TransportLayer, err, logger.Args{})
+		return derror.EncodeHTTPError(c.Response().Writer, err)
 	}
 
-	return c.JSON(200, true)
+	u.logger.Info(domain.UserDomain, logger.TransportLayer, logger.Args{"id": uID})
+
+	return response.EncodeHTTP(c.Response(), true)
 }

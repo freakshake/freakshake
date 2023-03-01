@@ -1,4 +1,4 @@
-module github.com/freakshake
+module github.com/freakshake/freakshake
 
 go 1.19
 

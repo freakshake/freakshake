@@ -9,7 +9,7 @@ import (
 	"github.com/freakshake/type/offlim"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/freakshake/internal/domain"
+	"github.com/freakshake/freakshake/internal/domain"
 )
 
 type userMongo struct {

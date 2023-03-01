@@ -16,12 +16,12 @@ import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	_ "github.com/freakshake/api/swagger"
-	"github.com/freakshake/config"
-	"github.com/freakshake/internal/controller"
-	"github.com/freakshake/internal/service"
-	"github.com/freakshake/internal/storage"
-	httpserver "github.com/freakshake/transport/server/http"
+	_ "github.com/freakshake/freakshake/api/swagger"
+	"github.com/freakshake/freakshake/config"
+	"github.com/freakshake/freakshake/internal/controller"
+	"github.com/freakshake/freakshake/internal/service"
+	"github.com/freakshake/freakshake/internal/storage"
+	httpserver "github.com/freakshake/freakshake/transport/server/http"
 )
 
 //	@title		freakshake Backend Service
@@ -83,7 +83,7 @@ func main() {
 	g := e.Group("/api/v1")
 	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	controller.UserRoutes(g, userService, logger)
-	controller.AuthRoutes(g, authService)
+	controller.AuthRoutes(g, authService, logger)
 
 	httpServer := &http.Server{
 		ReadTimeout:       cfg.HTTPServer.ReadTimeout * time.Second,
