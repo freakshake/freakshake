@@ -6,8 +6,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/freakshake/cache/redis"
@@ -66,10 +64,10 @@ func main() {
 	xerror.PanicIf(err)
 	defer logFile.Close()
 
+	logger := zerolog.New(logFile)
+
 	// Auto migrate up.
 	xerror.PanicIf(postgres.MigrateUp(postgresDB, cfg.Postgres.MigrationsPath))
-
-	logger := zerolog.New(logFile)
 
 	// Storage (repository) layer.
 	userPostgresStorage := storage.NewUserPostgresStorage(postgresDB, logger)
@@ -87,8 +85,6 @@ func main() {
 	controller.UserRoutes(g, userService, logger)
 	controller.AuthRoutes(g, authService)
 
-	errCh := make(chan error, 1)
-
 	httpServer := &http.Server{
 		ReadTimeout:       cfg.HTTPServer.ReadTimeout * time.Second,
 		WriteTimeout:      cfg.HTTPServer.WriteTimeout * time.Second,
@@ -98,37 +94,10 @@ func main() {
 		Handler:           e,
 	}
 
+	errCh := make(chan error, 1)
+
 	httpserver.SpawnListener(httpServer, errCh)
-
-	// Graceful shutdown in case of common signals.
-	ctx, stop := signal.NotifyContext(
-		context.Background(),
-		os.Interrupt,
-		syscall.SIGTERM,
-		syscall.SIGQUIT,
-	)
-
-	go func() {
-		<-ctx.Done()
-
-		fmt.Println("\n[-] Shutdown signal received")
-
-		ctxTimeout, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-
-		defer func() {
-			stop()
-			cancel()
-			close(errCh)
-		}()
-
-		httpServer.SetKeepAlivesEnabled(false)
-
-		if err := httpServer.Shutdown(ctxTimeout); err != nil {
-			errCh <- err
-		}
-
-		fmt.Println("[-] Shutdown completed")
-	}()
+	httpserver.SpawnShutdownListener(errCh, httpServer)
 
 	if err := <-errCh; err != nil {
 		fmt.Println("[x] error:", err)

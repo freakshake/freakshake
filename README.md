@@ -73,6 +73,22 @@ or <https://github.com/freakshake/mongo> in the /pkg directory. We should implem
 
 We should ping the DB if possible for a quick health check.
 
+## Logger
+
+Currently logger component is using the <https://github.com/freakshake/logger> Logger interface and implements zerolog for structured logging. But the destination of logs are a single file on the same server as the backend app. This is bad :/
+
+* Todo: Check proposal for implementing an event-based logging system using message queues, workers, remote server, and
+log transport protocols.
+
+Logging convention we use is logging all the errors in the storage layer and controller layer when binding request, validating, and calling the service layer.
+Only log the ID of the entity being requested and processed as an information log in the corresponding controller. We do not log the entire object.
+
+Examples of logs:
+
+```log
+{"level":"error","domain":"user","layer":"TRANSPORT","file":"/home/user/freakshake/internal/controller/user.go","line":76,"caller":"github.com/freakshake/internal/controller.user.createHandler","err":"code=400, message=Syntax error: offset=50, error=invalid character 's' after object key:value pair,"time":1677231468}
+```
+
 ## Errors
 
 ### Panics
